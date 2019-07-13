@@ -6,12 +6,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class IndexServlet extends HttpServlet {
-	public IndexServlet() {}
+public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = -6193286177757516310L;
+
+	public LoginServlet() {}
 
 	// GET
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException {
-		res.sendRedirect("index.html");
+		System.out.println("GET");
+	}
+
+	// POST
+	protected void doPost(HttpServletRequest req, HttpServletResponse res)
+	throws ServletException, IOException {
+		System.out.println("POST");
 	}
 }
