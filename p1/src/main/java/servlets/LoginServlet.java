@@ -1,6 +1,7 @@
 package servlets;
 
-import javax.servlet.ServletException;
+import utilities.RequestUtility;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,14 +13,14 @@ public class LoginServlet extends HttpServlet {
 	public LoginServlet() {}
 
 	// GET
-	protected void doGet(HttpServletRequest req, HttpServletResponse res)
-	throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) {
 		System.out.println("GET");
 	}
 
 	// POST
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
-	throws ServletException, IOException {
-		System.out.println("POST");
+	throws IOException {
+		String json = RequestUtility.bodyToJson(req);
+		System.out.println(json);
 	}
 }
