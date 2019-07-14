@@ -13,12 +13,26 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	private static Connection connection = cs.getConnection();
 
 	@Override
+	public Employee getEmployee(int id) throws SQLException {
+		String sql = "SELECT * FROM EMPLOYEE WHERE E_ID = ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, id);
+
+		ResultSet rs = stmt.executeQuery();
+		return parseResultSet(rs);
+	}
+	@Override
 	public Employee getEmployee(String email) throws SQLException {
 		String sql = "SELECT * FROM EMPLOYEE WHERE E_EMAIL = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, email);
 
 		ResultSet rs = stmt.executeQuery();
+		return parseResultSet(rs);
+	}
+
+	// Returns a single Employee from the result set
+	private Employee parseResultSet(ResultSet rs) throws SQLException {
 		Employee e = new Employee();
 		if (!rs.isBeforeFirst()) {
 			return null;
