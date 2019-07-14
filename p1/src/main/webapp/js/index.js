@@ -1,14 +1,29 @@
+let form = document.getElementById("signInForm");
+
 window.onload = () => {
-	let form = document.forms.signInForm;
-	form.onSubmit = (e) => {
+	form.onsubmit = (e) => {
+		e.preventDefault();
+
+		let data = {};
 		let formData = new FormData(form);
-		fetch("/login", {
-			method: "POST",
-			mode: "cors",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: data
-		});
-	}
+		for (let entry of formData.entries()) {
+			data[entry[0]] = entry[1];
+		}
+
+		const dataString = JSON.stringify(data);
+		handleFormSubmit(dataString);
+	};
+};
+
+function handleFormSubmit(dataString) {
+	fetch("/p1/login", {
+		method: "post",
+		headers: {
+			"Accept": "application/json",
+			"Content-Type": "application/json"
+		},
+		body: dataString
+	}).then((res) => {
+		//console.log(res);
+	});
 }
