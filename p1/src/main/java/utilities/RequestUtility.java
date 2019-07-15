@@ -13,8 +13,7 @@ public class RequestUtility {
 		while ((line = reader.readLine()) != null) {
 			buffer.append(line);
 		}
-		String json = buffer.toString();
 
-		return json;
+		return buffer.toString();
 	}
 }
