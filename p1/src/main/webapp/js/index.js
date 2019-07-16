@@ -24,6 +24,12 @@ function handleFormSubmit(dataString) {
 		},
 		body: dataString
 	}).then((res) => res.json()).then((json) => {
-		console.log(json);
+		if (json.error) {
+			console.log(json.error);
+		} else {
+			sessionStorage.setItem("id", `${json.id}`);
+			sessionStorage.setItem("firstName", `${json.firstName}`);
+			window.location.replace("/dashboard");
+		}
 	});
 }
