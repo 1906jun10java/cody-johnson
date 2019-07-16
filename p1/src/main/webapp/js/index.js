@@ -16,14 +16,14 @@ window.onload = () => {
 };
 
 function handleFormSubmit(dataString) {
-	fetch("/p1/login", {
+	fetch("/login", {
 		method: "post",
 		headers: {
 			"Accept": "application/json",
 			"Content-Type": "application/json"
 		},
 		body: dataString
-	}).then((res) => {
-		//console.log(res);
+	}).then((res) => res.json()).then((json) => {
+		console.log(json);
 	});
 }
