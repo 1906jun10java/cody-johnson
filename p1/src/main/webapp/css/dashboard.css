@@ -1,0 +1,23 @@
+@import "https://getbootstrap.com/docs/4.3/dist/css/bootstrap.min.css";
+
+body {
+	padding-top: 5rem;
+}
+
+.navbar-dark {
+	background-color: #222 !important;
+}
+
+.navbar-brand {
+	font-weight: 600;
+	font-size: 20pt;
+}
+
+.dashboard {
+	padding: 3rem 1.5rem;
+	text-align: left;
+}
+.dashboard p {
+	font-size:1.25rem;
+	font-weight:300;
+}
