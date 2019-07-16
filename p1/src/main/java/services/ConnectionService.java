@@ -1,7 +1,7 @@
 package services;
 
-import java.io.FileReader;
-import java.io.IOException;
+import utilities.PropertiesUtility;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,15 +26,15 @@ public class ConnectionService {
 	// Make connection
 	private Connection makeConnection() {
 		Connection c = null;
-		Properties p = new Properties();
+		Properties p = PropertiesUtility.getProperties();
 
 		try {
-			String propertiesFile = "database.properties";
-			p.load(new FileReader(propertiesFile));
 			Class.forName(p.getProperty("driver"));
-			c = DriverManager.getConnection(p.getProperty("url"),
-					p.getProperty("user"), p.getProperty("password"));
-		} catch (IOException | SQLException | ClassNotFoundException e) {
+			String url = p.getProperty("url");
+			String user = p.getProperty("user");
+			String pass = p.getProperty("password");
+			c = DriverManager.getConnection(url, user, pass);
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
