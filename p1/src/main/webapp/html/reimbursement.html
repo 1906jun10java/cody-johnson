@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Create Reimbursement</title>
+	<link rel="stylesheet" href="../css/reimbursement.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+	<a class="navbar-brand" href="#">ERS</a>
+	<ul class="navbar-nav ml-auto">
+		<li class="nav-item">
+			<a id="logOutBtn" class="nav-link" href="#">Log Out</a>
+		</li>
+	</ul>
+	<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarsExampleDefault"
+			aria-controls="navbarsExampleDefault"
+			aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+</nav>
+
+<form id="reimbursementForm" class="form-signin">
+	<div class="text-center mb-4">
+		<h5>Create a Reimbursement</h5>
+	</div>
+	<div class="form-label-group">
+		<label for="reimbursementType">Reimbursement Type</label>
+		<select class="form-control" id="reimbursementType">
+			<option>Seminar</option>
+			<option>Preparation Classes</option>
+			<option>Certification</option>
+			<option>Technical Training</option>
+			<option>Other</option>
+		</select>
+	</div>
+	<div class="form-label-group">
+		<input type="text" id="amount" class="form-control" name="amount"
+		placeholder="Amount" required>
+	</div>
+	<div class="form-label-group">
+		<textarea class="form-control" name="description" id="description"
+		rows="3" placeholder="Description" required></textarea>
+	</div>
+	<div class="form-label-group">
+		<label for="receiptImg">Attach Receipt Image</label>
+		<input type="file" class="form-control-file" id="receiptImg" required>
+	</div>
+	<button id="signInButton" class="btn btn-lg btn-primary btn-dark btn-block">
+		Submit
+	</button>
+</form>
+</body>
+</html>
