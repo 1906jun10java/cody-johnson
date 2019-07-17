@@ -12,6 +12,7 @@ public class Reimbursement {
 	private BigDecimal amount;
 	private int unixTs;
 	private String description;
+	private String receiptImgUrl;
 
 	public static final Map<Integer, String> types;
 	public static final Map<Integer, String> statuses;
@@ -84,5 +85,11 @@ public class Reimbursement {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public String getReceiptImgUrl() {
+		return receiptImgUrl;
+	}
+	public void setReceiptImgUrl(String receiptImgUrl) {
+		this.receiptImgUrl = receiptImgUrl;
 	}
 }

@@ -37,4 +37,14 @@
 		<servlet-name>DashboardServlet</servlet-name>
 		<url-pattern>/dashboard</url-pattern>
 	</servlet-mapping>
+
+	<!-- ReimbursementServlet -->
+	<servlet>
+		<servlet-name>ReimbursementServlet</servlet-name>
+		<servlet-class>servlets.ReimbursementServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ReimbursementServlet</servlet-name>
+		<url-pattern>/reimbursement/*</url-pattern>
+	</servlet-mapping>
 </web-app>
