@@ -11,8 +11,6 @@ import java.io.IOException;
 public class DashboardServlet extends HttpServlet {
 	private EmployeeService employeeService = EmployeeService.getInstance();
 
-	public DashboardServlet() {}
-
 	// GET
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)

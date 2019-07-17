@@ -12,8 +12,6 @@ import java.io.PrintWriter;
 public class LoginServlet extends HttpServlet {
 	private EmployeeService employeeService = EmployeeService.getInstance();
 
-	public LoginServlet() {}
-
 	// GET
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
