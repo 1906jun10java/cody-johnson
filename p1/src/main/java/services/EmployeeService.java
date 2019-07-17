@@ -1,7 +1,7 @@
 package services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import daos.EmployeeDaoImpl;
 import models.Employee;
 import utilities.RequestUtility;
@@ -22,8 +22,8 @@ public class EmployeeService {
 		return instance;
 	}
 
-	// Login a user, returns a response JSON
-	public String login(HttpServletRequest req) {
+	// Check user credentials, returns a JSON string
+	public String login(HttpServletRequest req) throws JsonProcessingException {
 		ObjectMapper om = new ObjectMapper();
 		Employee e1 = null;
 		Employee e2 = null;
@@ -39,7 +39,7 @@ public class EmployeeService {
 			return ("{\"error\":" + "\"Invalid email or password\"}");
 		}
 		if (e1.getPassword().equals(e2.getPassword())) {
-			return new Gson().toJson(e2);
+			return om.writeValueAsString(e2);
 		} else {
 			return ("{\"error\":" + "\"Invalid email or password\"}");
 		}
