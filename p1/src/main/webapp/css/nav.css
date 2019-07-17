@@ -1,0 +1,12 @@
+.navbar-dark {
+	background-color: #222 !important;
+}
+
+.navbar-brand {
+	font-weight: 600;
+	font-size: 20pt;
+}
+
+#logOutBtn {
+	font-weight: bold;
+}
