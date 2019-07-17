@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
 	// GET
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
-		System.out.println("GET");
+		req.getRequestDispatcher("index.html").forward(req, res);
 	}
 
 	// POST
