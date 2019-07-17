@@ -2,15 +2,6 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<display-name>ERS</display-name>
 	
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
-	</welcome-file-list>
-
 	<!-- Default -->
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
@@ -19,7 +10,6 @@
 
 	<!-- LoginServlet -->
 	<servlet>
-		<display-name>Login</display-name>
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class>servlets.LoginServlet</servlet-class>
 	</servlet>
@@ -30,7 +20,6 @@
 
 	<!-- DashboardServlet -->
 	<servlet>
-		<display-name>Dashboard</display-name>
 		<servlet-name>DashboardServlet</servlet-name>
 		<servlet-class>servlets.DashboardServlet</servlet-class>
 	</servlet>
