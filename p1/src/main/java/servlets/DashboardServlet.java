@@ -14,6 +14,7 @@ public class DashboardServlet extends HttpServlet {
 	public DashboardServlet() {}
 
 	// GET
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
 		req.getRequestDispatcher("/html/dashboard.html").forward(req, res);

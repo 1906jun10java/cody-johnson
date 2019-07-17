@@ -15,12 +15,14 @@ public class LoginServlet extends HttpServlet {
 	public LoginServlet() {}
 
 	// GET
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
 		req.getRequestDispatcher("index.html").forward(req, res);
 	}
 
 	// POST
+	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
 		PrintWriter pw = res.getWriter();
