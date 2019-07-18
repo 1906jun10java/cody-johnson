@@ -29,13 +29,15 @@
 	</button>
 </nav>
 
-<form id="reimbursementForm" class="form-signin" enctype="multipart/form-data">
+<form id="reimbursementForm" class="form-signin" action="/reimbursement/create"
+enctype="multipart/form-data" method="POST">
 	<div class="text-center mb-4">
 		<h5>Create a Reimbursement</h5>
 	</div>
 	<div class="form-label-group">
 		<label for="reimbursementType">Reimbursement Type</label>
-		<select class="form-control" id="reimbursementType">
+		<select class="form-control" id="reimbursementType"
+		name="type">
 			<option>Seminar</option>
 			<option>Preparation Classes</option>
 			<option>Certification</option>
@@ -53,9 +55,10 @@
 	</div>
 	<div class="form-label-group">
 		<label for="receiptImg">Attach Receipt Image</label>
-		<input type="file" class="form-control-file" id="receiptImg" required>
+		<input type="file" class="form-control-file" id="receiptImg"
+	    name="imgFile" required>
 	</div>
-	<button id="signInButton" class="btn btn-lg btn-primary btn-dark btn-block">
+	<button id="submitButton" class="btn btn-lg btn-primary btn-dark btn-block">
 		Submit
 	</button>
 </form>
