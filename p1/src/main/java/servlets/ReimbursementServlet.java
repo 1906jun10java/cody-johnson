@@ -10,7 +10,11 @@ public class ReimbursementServlet extends HttpServlet {
 	// GET
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
-		req.getRequestDispatcher("/html/reimbursement.html").forward(req, res);
+		String uri = req.getRequestURI();
+		if (uri.equals("/reimbursement/create")) {
+			req.getRequestDispatcher("/html/createReimbursement.html")
+					.forward(req, res);
+		}
 	}
 
 	// PUT
