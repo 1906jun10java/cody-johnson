@@ -15,7 +15,7 @@ window.onload = () => {
 	};
 };
 
-function handleFormSubmit(dataString) {
+let handleFormSubmit = (dataString) => {
 	fetch("/login", {
 		method: "post",
 		headers: {
@@ -32,4 +32,4 @@ function handleFormSubmit(dataString) {
 			window.location.replace("/dashboard");
 		}
 	});
-}
+};

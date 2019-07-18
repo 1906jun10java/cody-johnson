@@ -1,5 +1,10 @@
+import {logOut, validate} from "./validation.js";
+
+// Check if user is valid
+validate();
+
 window.onload = () => {
-    validate();
+    setHeading();
 
     // Event handlers
     let logOutBtn = document.getElementById("logOutBtn").onclick = () => {
@@ -7,25 +12,9 @@ window.onload = () => {
     };
 };
 
-// Validate user
-function validate() {
-    let eId = sessionStorage.getItem("id");
-    if (eId) {
-        setHeading();
-    } else {
-        window.location.replace("/login");
-    }
-}
-
 // Set welcome message in heading
-function setHeading() {
+let setHeading = () => {
     let eFirstName = sessionStorage.getItem("firstName");
     let heading = document.getElementById("heading");
     heading.innerText = `Welcome, ${eFirstName}`;
-}
-
-// Clear session and forward to log in page
-function logOut() {
-    sessionStorage.clear();
-    window.location.replace("/login");
-}
+};
