@@ -1,7 +1,5 @@
-let form = document.getElementById("signInForm");
-
 window.onload = () => {
-	form.onsubmit = (e) => {
+	document.getElementById("signInForm").onsubmit = (e) => {
 		e.preventDefault();
 
 		let data = {};
@@ -9,8 +7,8 @@ window.onload = () => {
 		for (let entry of formData.entries()) {
 			data[entry[0]] = entry[1];
 		}
-
 		const dataString = JSON.stringify(data);
+
 		handleFormSubmit(dataString);
 	};
 };
