@@ -7,3 +7,11 @@
 	font-size: 20pt;
 	margin-right: 2em;
 }
+
+.navbar-nav .nav-item .nav-link {
+	color: #fff;
+}
+
+.navbar-toggler {
+	margin-left: 2em;
+}

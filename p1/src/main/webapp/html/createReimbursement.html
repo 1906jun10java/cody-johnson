@@ -9,11 +9,13 @@
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
 	<a class="navbar-brand" href="/dashboard">ERS</a>
-	<ul class="navbar-nav">
-		<li class="nav-item">
-			<a href="/reimbursement/create" class="nav-link active">Create</a>
-		</li>
-	</ul>
+	<div class="collapse navbar-collapse" id="navbarNav">
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a href="/reimbursement/create" class="nav-link">Create</a>
+			</li>
+		</ul>
+	</div>
 	<ul class="navbar-nav ml-auto">
 		<li class="nav-item">
 			<a id="logOutBtn" class="nav-link" href="#">Log Out</a>
@@ -21,8 +23,8 @@
 	</ul>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarsExampleDefault"
-			aria-controls="navbarsExampleDefault"
-			aria-expanded="false" aria-label="Toggle navigation">
+			aria-controls="navbarsExampleDefault" aria-expanded="false"
+			aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 </nav>
