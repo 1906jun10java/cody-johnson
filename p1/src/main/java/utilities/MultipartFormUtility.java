@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MultipartFormUtility {
+	// Parse each form item in request
 	public static List<FileItem> getItems(HttpServletRequest req) {
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -25,6 +26,7 @@ public class MultipartFormUtility {
 		return items;
 	}
 
+	// Parse form input fields from items
 	public static Map<String,String> parseFormData(List<FileItem> items) {
 		Map<String,String> formData = new HashMap<>();
 		for (FileItem item : items) {
@@ -36,6 +38,7 @@ public class MultipartFormUtility {
 		return formData;
 	}
 
+	// Parse binary data from items
 	public static byte[] parseFile(List<FileItem> items) {
 		byte[] file = null;
 		for (FileItem item : items) {
