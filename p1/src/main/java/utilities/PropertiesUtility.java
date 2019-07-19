@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class PropertiesUtility {
+class PropertiesUtility {
 	private static Properties properties;
 
-	public static Properties getProperties() {
+	static Properties getProperties() {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
 		if (PropertiesUtility.properties == null) {
