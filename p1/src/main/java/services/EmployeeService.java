@@ -25,8 +25,6 @@ public class EmployeeService {
 	// Check user credentials, returns a JSON string
 	public String login(String email, String password)
 	throws JsonProcessingException {
-		ObjectMapper om = new ObjectMapper();
-
 		// Get matching credential from db
 		Credential c = null;
 		try {
@@ -48,6 +46,7 @@ public class EmployeeService {
 		}
 
 		// Return JSON
+		ObjectMapper om = new ObjectMapper();
 		if (e != null) {
 			return om.writeValueAsString(e);
 		} else {

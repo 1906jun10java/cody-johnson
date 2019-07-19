@@ -28,10 +28,10 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
 		List<FileItem> items = MultipartFormUtility.getItems(req);
-
 		Map<String,String> data = MultipartFormUtility.parseFormData(items);
 		String email = data.get("email");
 		String password = data.get("password");
+
 		String json = employeeService.login(email, password);
 
 		PrintWriter pw = res.getWriter();
