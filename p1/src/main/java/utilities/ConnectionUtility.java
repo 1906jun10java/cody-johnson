@@ -1,24 +1,22 @@
-package services;
-
-import utilities.PropertiesUtility;
+package utilities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectionService {
-	private static ConnectionService instance;
+public class ConnectionUtility {
+	private static ConnectionUtility instance;
 	private static Connection connection = null;
 
-	private ConnectionService() {
+	private ConnectionUtility() {
 		connection = makeConnection();
 	}
 
 	// Return singleton instance
-	public static synchronized ConnectionService getInstance() {
+	public static synchronized ConnectionUtility getInstance() {
 		if (instance == null) {
-			instance = new ConnectionService();
+			instance = new ConnectionUtility();
 		}
 		return instance;
 	}

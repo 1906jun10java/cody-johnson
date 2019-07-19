@@ -1,7 +1,7 @@
 package daos;
 
 import models.Employee;
-import services.ConnectionService;
+import utilities.ConnectionUtility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EmployeeDaoImpl implements EmployeeDao {
-	private static ConnectionService cs = ConnectionService.getInstance();
+	private static ConnectionUtility cs = ConnectionUtility.getInstance();
 	private static Connection connection = cs.getConnection();
 
 	@Override

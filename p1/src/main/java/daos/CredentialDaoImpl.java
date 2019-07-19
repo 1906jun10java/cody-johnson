@@ -1,7 +1,7 @@
 package daos;
 
 import models.Credential;
-import services.ConnectionService;
+import utilities.ConnectionUtility;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CredentialDaoImpl implements CredentialDao {
-	private static ConnectionService cs = ConnectionService.getInstance();
+	private static ConnectionUtility cs = ConnectionUtility.getInstance();
 	private static Connection connection = cs.getConnection();
 
 	@Override
