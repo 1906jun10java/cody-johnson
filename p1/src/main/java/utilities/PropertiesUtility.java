@@ -13,9 +13,8 @@ public class PropertiesUtility {
 		if (PropertiesUtility.properties == null) {
 			properties = new Properties();
 			try {
-				String databaseProperties = "database.properties";
-				InputStream resource =
-					classLoader.getResourceAsStream(databaseProperties);
+				String dbProps = "database.properties";
+				InputStream resource = classLoader.getResourceAsStream(dbProps);
 				properties.load(resource);
 			} catch (IOException e) {
 				e.printStackTrace();
