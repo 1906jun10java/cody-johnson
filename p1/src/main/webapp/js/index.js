@@ -1,26 +1,17 @@
 window.onload = () => {
 	document.getElementById("signInForm").onsubmit = (e) => {
 		e.preventDefault();
-
-		let data = {};
-		let formData = new FormData(form);
-		for (let entry of formData.entries()) {
-			data[entry[0]] = entry[1];
-		}
-		const dataString = JSON.stringify(data);
-
-		handleFormSubmit(dataString);
+		handleFormSubmit();
 	};
 };
 
-let handleFormSubmit = (dataString) => {
+let handleFormSubmit = () => {
+	const form = document.getElementById("signInForm");
+	let data = new FormData(form);
+
 	fetch("/login", {
-		method: "post",
-		headers: {
-			"Accept": "application/json",
-			"Content-Type": "application/json"
-		},
-		body: dataString
+		method: "POST",
+		body: data
 	}).then((res) => res.json()).then((json) => {
 		if (json.error) {
 			console.log(json.error);
