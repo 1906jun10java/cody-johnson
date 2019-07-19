@@ -17,7 +17,11 @@ let handleFormSubmit = () => {
 			console.log(json.error);
 		} else {
 			sessionStorage.setItem("id", `${json.id}`);
+			sessionStorage.setItem("email", `${json.email}`);
 			sessionStorage.setItem("firstName", `${json.firstName}`);
+			sessionStorage.setItem("lastName", `${json.lastName}`);
+			sessionStorage.setItem("level", `${json.level}`);
+			sessionStorage.setItem("reportsTo", `${json.reportsTo}`);
 			window.location.replace("/dashboard");
 		}
 	});
