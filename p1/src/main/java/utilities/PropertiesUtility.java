@@ -8,13 +8,13 @@ public class PropertiesUtility {
 	private static Properties properties;
 
 	public static Properties getProperties() {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
 		if (PropertiesUtility.properties == null) {
 			properties = new Properties();
 			try {
 				String dbProps = "database.properties";
-				InputStream resource = classLoader.getResourceAsStream(dbProps);
+				InputStream resource = loader.getResourceAsStream(dbProps);
 				properties.load(resource);
 			} catch (IOException e) {
 				e.printStackTrace();
