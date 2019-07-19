@@ -2,17 +2,17 @@ package services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import daos.CredentialDaoImpl;
 import daos.EmployeeDaoImpl;
+import models.Credential;
 import models.Employee;
-import utilities.RequestUtility;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class EmployeeService {
 	private static EmployeeService instance;
 	private static EmployeeDaoImpl edi = new EmployeeDaoImpl();
+	private static CredentialDaoImpl cdi = new CredentialDaoImpl();
 
 	// Return singleton instance
 	public static synchronized EmployeeService getInstance() {
@@ -23,23 +23,33 @@ public class EmployeeService {
 	}
 
 	// Check user credentials, returns a JSON string
-	public String login(HttpServletRequest req) throws JsonProcessingException {
+	public String login(String email, String password)
+	throws JsonProcessingException {
 		ObjectMapper om = new ObjectMapper();
-		Employee e1 = null;
-		Employee e2 = null;
+
+		// Get matching credential from db
+		Credential c = null;
 		try {
-			String json = RequestUtility.bodyToJson(req);
-			e1 = om.readValue(json, Employee.class);
-			e2 = edi.getEmployee(e1.getEmail());
-		} catch (IOException | SQLException e) {
+			c = cdi.getPassword(email);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		if (e2 == null) {
+		// Validate credential
+		Employee e = null;
+		if (c != null && c.getPassword().equals(password)) {
+			try {
+				e = edi.getEmployee(email);
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		} else {
 			return ("{\"error\":" + "\"Invalid email or password\"}");
 		}
-		if (e1.getPassword().equals(e2.getPassword())) {
-			return om.writeValueAsString(e2);
+
+		// Return JSON
+		if (e != null) {
+			return om.writeValueAsString(e);
 		} else {
 			return ("{\"error\":" + "\"Invalid email or password\"}");
 		}

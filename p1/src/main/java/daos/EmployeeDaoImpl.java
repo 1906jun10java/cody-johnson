@@ -41,7 +41,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			e.setId(rs.getInt("E_ID"));
 			e.setLevel(rs.getInt("E_LEVEL"));
 			e.setEmail(rs.getString("E_EMAIL"));
-			e.setPassword(rs.getString("E_PASSWORD"));
 			e.setFirstName(rs.getString("E_FIRST_NAME"));
 			e.setLastName(rs.getString("E_LAST_NAME"));
 			e.setReportsTo(rs.getInt("E_REPORTS_TO"));

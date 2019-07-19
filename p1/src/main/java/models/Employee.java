@@ -4,7 +4,6 @@ public class Employee {
 	private int id;
 	private int level;
 	private String email;
-	private String password;
 	private String firstName;
 	private String lastName;
 	private int reportsTo;
@@ -28,12 +27,6 @@ public class Employee {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public String getFirstName() {
 		return firstName;
