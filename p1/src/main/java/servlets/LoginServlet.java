@@ -27,14 +27,15 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
+		// Parse form data
 		List<FileItem> items = MultipartFormUtility.getItems(req);
 		Map<String,String> data = MultipartFormUtility.parseFormData(items);
 		String email = data.get("email");
 		String password = data.get("password");
 
-		String json = employeeService.login(email, password);
-
+		// Send response back to client
 		PrintWriter pw = res.getWriter();
+		String json = employeeService.login(email, password);
 		pw.write(json);
 	}
 }

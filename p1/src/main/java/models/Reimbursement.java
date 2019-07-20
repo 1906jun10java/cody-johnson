@@ -10,9 +10,9 @@ public class Reimbursement {
 	private int typeId;
 	private int statusId;
 	private BigDecimal amount;
-	private int unixTs;
+	private long unixTs;
 	private String description;
-	private String receiptImgUrl;
+	private byte[] receiptImgFile;
 
 	public static final Map<Integer, String> types;
 	public static final Map<Integer, String> statuses;
@@ -74,10 +74,10 @@ public class Reimbursement {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	public int getUnixTs() {
+	public long getUnixTs() {
 		return unixTs;
 	}
-	public void setUnixTs(int unixTs) {
+	public void setUnixTs(long unixTs) {
 		this.unixTs = unixTs;
 	}
 	public String getDescription() {
@@ -86,10 +86,10 @@ public class Reimbursement {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getReceiptImgUrl() {
-		return receiptImgUrl;
+	public byte[] getReceiptImgFile() {
+		return receiptImgFile;
 	}
-	public void setReceiptImgUrl(String receiptImgUrl) {
-		this.receiptImgUrl = receiptImgUrl;
+	public void setReceiptImgFile(byte[] receiptImgUrl) {
+		this.receiptImgFile = receiptImgUrl;
 	}
 }
