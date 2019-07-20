@@ -15,9 +15,15 @@ public class ReimbursementServlet extends HttpServlet {
 	// GET
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
-		String uri = req.getRequestURI();
+		PrintWriter pw = res.getWriter();
 
-		if (uri.equals("/reimbursement/create")) {
+		// Get requested endpoint
+		String uri = req.getRequestURI();
+		if (uri.equals("/reimbursement/employee/")) {
+			String json = rs.getEmployeeReimbursements(req);
+			pw.write(json);
+		}
+		else if (uri.equals("/reimbursement/create")) {
 			String html = "/html/createReimbursement.html";
 			req.getRequestDispatcher(html).forward(req, res);
 		}
@@ -26,12 +32,12 @@ public class ReimbursementServlet extends HttpServlet {
 	// POST
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws IOException {
+		PrintWriter pw = res.getWriter();
+
 		// Get requested endpoint
 		String uri = req.getRequestURI();
-
 		if (uri.equals("/reimbursement/create")) {
-			String json = rs.handlePostCreate(req);
-			PrintWriter pw = res.getWriter();
+			String json = rs.addReimbursement(req);
 			pw.write(json);
 		}
 	}

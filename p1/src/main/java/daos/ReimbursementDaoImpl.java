@@ -3,10 +3,9 @@ package daos;
 import models.Reimbursement;
 import utilities.ConnectionUtility;
 
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReimbursementDaoImpl implements ReimbursementDao {
@@ -31,7 +30,6 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 		Blob blob = connection.createBlob();
 		blob.setBytes(1, r.getReceiptImgFile());
 		stmt.setBlob(7, blob);
-
 		stmt.execute();
 	}
 
@@ -42,6 +40,27 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 	@Override
 	public List<Reimbursement> getReimbursements(int eId) throws SQLException {
-		return null;
+		String sql = "SELECT * FROM REIMBURSEMENT WHERE E_ID = ? ORDER BY R_UNIX_TS";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, eId);
+
+		ResultSet rs = stmt.executeQuery();
+		if (!rs.isBeforeFirst()) {
+			return null;
+		}
+
+		List<Reimbursement> rl = new ArrayList<>();
+		while (rs.next()) {
+			Reimbursement r = new Reimbursement();
+			r.setEmployeeId(rs.getInt("E_ID"));
+			r.setTypeId(rs.getInt("R_TYPE_ID"));
+			r.setStatusId(rs.getInt("R_STATUS_ID"));
+			r.setAmount(BigDecimal.valueOf(rs.getDouble("R_AMOUNT")));
+			r.setUnixTs(rs.getLong("R_UNIX_TS"));
+			r.setDescription(rs.getString("R_DESCRIPTION"));
+			r.setReceiptImgFile(rs.getBytes("R_RECEIPT_IMG"));
+			rl.add(r);
+		}
+		return rl;
 	}
 }

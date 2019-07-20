@@ -1,5 +1,7 @@
 package services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import daos.ReimbursementDaoImpl;
 import models.Reimbursement;
 import org.apache.commons.fileupload.FileItem;
@@ -24,8 +26,34 @@ public class ReimbursementService {
 		return instance;
 	}
 
+	// Return JSON of employee reimbursements
+	public String getEmployeeReimbursements(HttpServletRequest req)
+	throws JsonProcessingException {
+		// Get employee ID parameter from request
+		String param = req.getParameter("eId");
+		if (param == null) {
+			return ("{\"error\":" + "\"Error processing data\"}");
+		}
+		int eId = Integer.parseInt(param);
+
+		// Get employee reimbursements
+		List<Reimbursement> rl = null;
+		try {
+			rl = rdi.getReimbursements(eId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// Return JSON
+		ObjectMapper om = new ObjectMapper();
+		if (rl == null) {
+			return ("{\"error\":" + "\"Error processing data\"}");
+		}
+		return om.writeValueAsString(rl);
+	}
+
 	// Handle a post request to /reimbursement/create
-	public String handlePostCreate(HttpServletRequest req) {
+	public String addReimbursement(HttpServletRequest req) {
 		boolean isMultiPart = ServletFileUpload.isMultipartContent(req);
 		if (!isMultiPart) {
 			return ("{\"error\":" + "\"Error processing data\"}");
@@ -47,7 +75,6 @@ public class ReimbursementService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return ("{\"message\":" + "\"Submission successful\"}");
 	}
 
@@ -61,7 +88,6 @@ public class ReimbursementService {
 		r.setUnixTs(System.currentTimeMillis()/1000L);
 		r.setDescription(d.get("description"));
 		r.setReceiptImgFile(f);
-
 		return r;
 	}
 
