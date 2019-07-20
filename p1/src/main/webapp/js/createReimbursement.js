@@ -35,14 +35,21 @@ let handleFormSubmit = () => {
 		}
 	}
 
-	// Append binary file to formData
+	// Append binary file and employee id to formData
 	formData.append("imgFile", file);
+	formData.append("eId", sessionStorage.getItem("id"));
 
 	// POST to server
 	fetch("/reimbursement/create", {
 		method: "POST",
 		body: formData
-	}).then(res => {
-		console.log(res);
+	}).then((res) => res.json()).then((json) => {
+		if (json.error) {
+			// Send error to view
+			console.log(json);
+		} else {
+			// Redirect to dashboard
+			window.location.replace("/dashboard");
+		}
 	});
 };
