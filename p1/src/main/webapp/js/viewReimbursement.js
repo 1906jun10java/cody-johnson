@@ -4,11 +4,26 @@ import {logOut, validate} from "./validation.js";
 validate();
 
 window.onload = () => {
+	// Hide manager actions
+	if (sessionStorage.getItem("level") > 1) {
+		document.getElementById("rejectBtn").style.visibility = "visible";
+		document.getElementById("acceptBtn").style.visibility = "visible";
+	} else {
+		document.getElementById("rejectBtn").style.visibility = "hidden";
+		document.getElementById("acceptBtn").style.visibility = "hidden";
+	}
+
 	getReimbursement();
 
 	// Event handlers
 	document.getElementById("logOutBtn").onclick = () => {
 		logOut();
+	};
+	document.getElementById("rejectBtn").onclick = () => {
+		rejectReimbursement();
+	};
+	document.getElementById("acceptBtn").onclick = () => {
+		acceptReimbursement();
 	};
 };
 
@@ -17,7 +32,7 @@ let populateReimbursement = (json) => {
 	for (let key in json) {
 		if (json.hasOwnProperty(key)) {
 			if (key === "id") {
-				document.getElementById("id").innerText = json[key];
+				document.getElementById("id").innerText = "Reimbursement #" + json[key];
 			} else if (key === "employeeId") {
 				document.getElementById("employee").innerText = json[key];
 			} else if (key === "typeName") {
@@ -35,11 +50,10 @@ let populateReimbursement = (json) => {
 			} else if (key === "description") {
 				document.getElementById("description").innerText = json[key];
 			} else if (key === "receiptImgFile") {
-				let img = document.createElement("img");
-				img.src = getBase64FileType(json[key]) + json[key];
-				img.alt = "Receipt image";
-				img.width = 96;
-				document.getElementById("receiptImage").appendChild(img);
+				let receiptImg = document.createElement("img");
+				receiptImg.src = getBase64FileType(json[key]) + json[key];
+				receiptImg.alt = "Receipt image";
+				document.getElementById("receiptImgDiv").appendChild(receiptImg);
 			}
 		}
 	}
@@ -53,6 +67,9 @@ let getReimbursement = () => {
 		populateReimbursement(json);
 	});
 };
+
+// Reject reimbursement
+
 
 // Get ID parameter from URL
 let getUrlParam = (param) => {

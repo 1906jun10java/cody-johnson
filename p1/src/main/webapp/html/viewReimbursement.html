@@ -6,6 +6,9 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="../css/viewReimbursement.css">
 	<script src="../js/viewReimbursement.js" type="module"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<title>Dashboard</title>
 </head>
 <body>
@@ -33,13 +36,17 @@
 
 <div id="content">
 	<div class="row">
-		<div class="col">
-			<h5>Reimbursement ID:</h5>
+		<div class="col-8">
+			<h3 id="id"></h3>
 		</div>
-		<div class="col">
-			<p id="id"></p>
+		<div class="col-sm-2">
+			<button id="rejectBtn" class="btn btn-danger">Reject</button>
+		</div>
+		<div class="col-sm-2">
+			<button id="acceptBtn" class="btn btn-dark">Accept</button>
 		</div>
 	</div>
+	<hr/>
 	<div class="row">
 		<div class="col">
 			<h5>Employee:</h5>
@@ -88,10 +95,38 @@
 			<p id="description"></p>
 		</div>
 	</div>
-	<br/>
 	<div class="row">
-		<div id="receiptImage" class="col">
+		<div class="col">
 			<h5>Receipt:</h5>
+		</div>
+		<div class="col">
+			<button type="button" class="btn btn-sm btn-dark" data-toggle="modal"
+			data-target="#imgModal">
+				View
+			</button>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="imgModal" tabindex="-1" role="dialog"
+aria-labelledby="receiptModal" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Receipt</h5>
+				<button type="button" class="close" data-dismiss="modal"
+				aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="receiptImgDiv" class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-sm btn-dark"
+				data-dismiss="modal">
+					Close
+				</button>
+			</div>
 		</div>
 	</div>
 </div>

@@ -7,10 +7,12 @@ let reimbursementTableHeaders = [
 	"Type", "Status", "Amount", "Date", "Info"
 ];
 
+let isManager = sessionStorage.getItem("level") > 1;
+
 window.onload = () => {
 	setHeading();
 	loadUserReimbursements();
-	if (sessionStorage.getItem("level") > 1) {
+	if (isManager) {
 		let div = document.getElementById("subordinateReimbursements");
 		let tableTitle = document.createElement("h5");
 		tableTitle.innerText = "Subordinate Reimbursements";
@@ -44,7 +46,7 @@ let loadUserReimbursements = () => {
 			status.innerText = json.status;
 			document.getElementById("userReimbursements").appendChild(status);
 		} else {
-			populateReimbursementTable(json, "user");
+			populateReimbursementTable(json, "user", null);
 		}
 	});
 };
@@ -62,13 +64,14 @@ let loadSubordinateReimbursements = () => {
 			status.innerText = json.status;
 			document.getElementById("subordinateReimbursements").appendChild(status);
 		} else {
-			populateReimbursementTable(json, "subordinates");
+			let managerLevel = sessionStorage.getItem("level");
+			populateReimbursementTable(json, "subordinates", managerLevel);
 		}
 	});
 };
 
 // Populate reimbursements table
-let populateReimbursementTable = (json, flag) => {
+let populateReimbursementTable = (json, flag, managerLevel) => {
 	let div = null;
 	if (flag === "user") {
 		div = document.getElementById("userReimbursements");
@@ -96,6 +99,9 @@ let populateReimbursementTable = (json, flag) => {
 		let tr = document.createElement("tr");
 		for (let key in element) {
 			if (element.hasOwnProperty(key)) {
+				if (managerLevel && element["statusId"] !== managerLevel - 1) {
+					continue;
+				}
 				let td = document.createElement("td");
 				if (key === "statusName") {
 					td.innerText = element[key];
