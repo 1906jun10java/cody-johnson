@@ -47,7 +47,15 @@ let loadUserReimbursements = () => {
 	endpoint += sessionStorage.getItem("id");
 
 	fetch(endpoint).then((res) => res.json()).then((json) => {
-		populateUserReimbursements(json);
+		if (json.error) {
+			console.log(json.error);
+		} else if (json.status) {
+			let status = document.createElement("p");
+			status.innerText = json.status;
+			document.getElementById("userReimbursements").appendChild(status);
+		} else {
+			populateUserReimbursements(json);
+		}
 	});
 };
 
