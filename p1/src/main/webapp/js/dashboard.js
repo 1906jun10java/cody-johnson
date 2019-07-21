@@ -4,7 +4,7 @@ import {logOut, validate} from "./validation.js";
 validate();
 
 let reimbursementTableHeaders = [
-	"Type", "Status", "Amount", "Date"
+	"Type", "Status", "Amount", "Date", "Info"
 ];
 
 let reimbursementStatuses = {
@@ -43,7 +43,7 @@ let setHeading = () => {
 
 // Get user's reimbursements
 let loadUserReimbursements = () => {
-	let endpoint = "/reimbursement/employee/?eId=";
+	let endpoint = "/reimbursement/employee?eId=";
 	endpoint += sessionStorage.getItem("id");
 
 	fetch(endpoint).then((res) => res.json()).then((json) => {
@@ -85,14 +85,25 @@ let populateUserReimbursements = (json) => {
 					td.innerText = "$" + element[key].toFixed(2);
 				} else if (key === "unixTs") {
 					let date = new Date(element[key]*1000);
-					td.innerText = `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`;
+					let month = date.getMonth();
+					let day = date.getDate();
+					let year = date.getFullYear();
+					td.innerText = `${month}-${day}-${year}`;
 				} else {
 					td.innerText = element[key];
 				}
 				tr.appendChild(td);
 			}
+			tableBody.appendChild(tr);
 		}
-		table.appendChild(tr);
+		let td = document.createElement("td");
+		let link = document.createElement("a");
+		link.href = "/reimbursement/view?id=" + element["id"];
+		link.innerText = "Info";
+		td.appendChild(link);
+		tr.appendChild(td);
+		tableBody.appendChild(tr);
 	});
+	table.appendChild(tableBody);
 	userReimbursementsDiv.appendChild(table);
 };
