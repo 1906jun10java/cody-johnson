@@ -20,9 +20,9 @@ let populateReimbursement = (json) => {
 				document.getElementById("id").innerText = json[key];
 			} else if (key === "employeeId") {
 				document.getElementById("employee").innerText = json[key];
-			} else if (key === "typeId") {
+			} else if (key === "typeName") {
 				document.getElementById("type").innerText = json[key];
-			} else if (key === "statusId") {
+			} else if (key === "statusName") {
 				document.getElementById("status").innerText = json[key];
 			} else if (key === "amount") {
 				document.getElementById("amount").innerText = `\$${json[key].toFixed(2)}`;

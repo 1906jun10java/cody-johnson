@@ -10,11 +10,14 @@ import java.util.List;
 
 public class ReimbursementDaoImpl implements ReimbursementDao {
 	private static ConnectionUtility cu = ConnectionUtility.getInstance();
-	private static Connection connection = cu.getConnection();
 
 	@Override
 	public Reimbursement getReimbursement(int id) throws SQLException {
-		String sql = "SELECT * FROM REIMBURSEMENT WHERE R_ID = ?";
+		String sql = "SELECT * FROM REIMBURSEMENT R\n" +
+		"JOIN REIMBURSEMENT_STATUS S ON R.R_STATUS_ID = S.R_STATUS_ID\n" +
+		"JOIN REIMBURSEMENT_TYPE T ON R.R_TYPE_ID = T.R_TYPE_ID\n" +
+		"WHERE R_ID = ?";
+		Connection connection = cu.getConnection();
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, id);
 
@@ -33,6 +36,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	@Override
 	public void addReimbursement(Reimbursement r) throws SQLException {
 		String sql = "{ call INSERT_REIMBURSEMENT(?,?,?,?,?,?,?)";
+		Connection connection = cu.getConnection();
 		CallableStatement stmt = connection.prepareCall(sql);
 		stmt.setInt(1, r.getEmployeeId());
 		stmt.setInt(2, r.getTypeId());
@@ -53,9 +57,66 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 	@Override
 	public List<Reimbursement> getReimbursements(int eId) throws SQLException {
-		String sql = "SELECT * FROM REIMBURSEMENT WHERE E_ID = ? ORDER BY R_UNIX_TS";
+		String sql = "SELECT * FROM REIMBURSEMENT R\n" +
+		"JOIN REIMBURSEMENT_STATUS S ON R.R_STATUS_ID = S.R_STATUS_ID\n" +
+		"JOIN REIMBURSEMENT_TYPE T ON R.R_TYPE_ID = T.R_TYPE_ID\n" +
+		"WHERE E_ID = ? ORDER BY R_UNIX_TS DESC";
+		Connection connection = cu.getConnection();
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, eId);
+
+		ResultSet rs = stmt.executeQuery();
+		if (!rs.isBeforeFirst()) {
+			return null;
+		}
+
+		List<Reimbursement> rl = new ArrayList<>();
+		while (rs.next()) {
+			Reimbursement r = populateData(rs);
+			rl.add(r);
+		}
+		return rl;
+	}
+
+	@Override
+	public List<Reimbursement> getSubordinateReimbursements(int eId) throws SQLException {
+		String sql = "SELECT * FROM REIMBURSEMENT R\n" +
+		"JOIN REIMBURSEMENT_STATUS S ON R.R_STATUS_ID = S.R_STATUS_ID\n" +
+		"JOIN REIMBURSEMENT_TYPE T ON R.R_TYPE_ID = T.R_TYPE_ID\n" +
+		"WHERE R.E_ID IN (\n" +
+		"\tSELECT E_ID FROM EMPLOYEE E1\n" +
+		"\tWHERE E1.E_ID IN (\n" +
+		"\t\tSELECT E_ID FROM EMPLOYEE E2\n" +
+		"\t\tWHERE E2.E_REPORTS_TO IN (\n" +
+		"\t\t\tSELECT E_ID FROM EMPLOYEE E3\n" +
+		"\t\t\tWHERE E3.E_REPORTS_TO IN (\n" +
+		"\t\t\t\tSELECT E_ID FROM EMPLOYEE E4\n" +
+		"\t\t\t\tWHERE E4.E_REPORTS_TO = ?\n" +
+		"\t\t\t)\n" +
+		"\t\t)\n" +
+		"\t)\n" +
+		"\tUNION\n" +
+		"\tSELECT E_ID FROM EMPLOYEE E1\n" +
+		"\tWHERE E1.E_ID IN (\n" +
+		"\t\tSELECT E_ID FROM EMPLOYEE E2\n" +
+		"\t\tWHERE E2.E_REPORTS_TO IN (\n" +
+		"\t\t\tSELECT E_ID FROM EMPLOYEE E3\n" +
+		"\t\t\tWHERE E3.E_REPORTS_TO = ?\n" +
+		"\t\t)\n" +
+		"\t)\n" +
+		"\tUNION\n" +
+		"\tSELECT E_ID FROM EMPLOYEE E1\n" +
+		"\tWHERE E1.E_ID IN (\n" +
+		"\t\tSELECT E_ID FROM EMPLOYEE E2\n" +
+		"\t\tWHERE E2.E_REPORTS_TO = ?\n" +
+		"\t)\n" +
+		")\n" +
+		"ORDER BY R.R_UNIX_TS";
+		Connection connection = cu.getConnection();
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, eId);
+		stmt.setInt(2, eId);
+		stmt.setInt(3, eId);
 
 		ResultSet rs = stmt.executeQuery();
 		if (!rs.isBeforeFirst()) {
@@ -81,6 +142,8 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 		r.setUnixTs(rs.getLong("R_UNIX_TS"));
 		r.setDescription(rs.getString("R_DESCRIPTION"));
 		r.setReceiptImgFile(rs.getBytes("R_RECEIPT_IMG"));
+		r.setStatusName(rs.getString("R_STATUS_NAME"));
+		r.setTypeName(rs.getString("R_TYPE_NAME"));
 		return r;
 	}
 }

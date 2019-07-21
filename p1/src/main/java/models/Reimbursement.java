@@ -1,37 +1,18 @@
 package models;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Reimbursement {
 	private int id;
 	private int employeeId;
 	private int typeId;
+	private String typeName;
 	private int statusId;
+	private String statusName;
 	private BigDecimal amount;
 	private long unixTs;
 	private String description;
 	private byte[] receiptImgFile;
-
-	public static final Map<Integer, String> types;
-	public static final Map<Integer, String> statuses;
-	static {
-		types = new HashMap<>();
-		types.put(1, "Seminar");
-		types.put(2, "Preparation Classes");
-		types.put(3, "Certification");
-		types.put(4, "Technical Training");
-		types.put(5, "Other");
-
-		statuses = new HashMap<>();
-		statuses.put(-1, "Rejected");
-		statuses.put(0, "More Information Required");
-		statuses.put(1, "Initialized");
-		statuses.put(2, "Supervisor Approved");
-		statuses.put(3, "Department Head Approved");
-		statuses.put(4, "Accepted");
-	}
 
 	public Reimbursement() {}
 	public Reimbursement(int employeeId, int typeId, int statusId,
@@ -91,5 +72,17 @@ public class Reimbursement {
 	}
 	public void setReceiptImgFile(byte[] receiptImgUrl) {
 		this.receiptImgFile = receiptImgUrl;
+	}
+	public String getTypeName() {
+		return typeName;
+	}
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+	public String getStatusName() {
+		return statusName;
+	}
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 }

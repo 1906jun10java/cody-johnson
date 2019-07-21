@@ -50,6 +50,31 @@ public class ReimbursementService {
 		return om.writeValueAsString(r);
 	}
 
+	// Return JSON of subordinate reimbursements
+	public String getSubordinateReimbursements(HttpServletRequest req)
+	throws JsonProcessingException {
+		// Get employee ID parameter from request
+		String param = req.getParameter("eId");
+		if (param == null) {
+			return ("{\"error\":" + "\"User doesn't exist\"}");
+		}
+		int eId = Integer.parseInt(param);
+
+		List<Reimbursement> rl = null;
+		try {
+			rl = rdi.getSubordinateReimbursements(eId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// Return JSON
+		ObjectMapper om = new ObjectMapper();
+		if (rl == null) {
+			return ("{\"status\":" + "\"Nothing to display\"}");
+		}
+		return om.writeValueAsString(rl);
+	}
+
 	// Return JSON of employee reimbursements
 	public String getEmployeeReimbursements(HttpServletRequest req)
 	throws JsonProcessingException {

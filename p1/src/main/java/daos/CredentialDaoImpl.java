@@ -9,16 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CredentialDaoImpl implements CredentialDao {
-	private static ConnectionUtility cs = ConnectionUtility.getInstance();
-	private static Connection connection = cs.getConnection();
+	private static ConnectionUtility cu = ConnectionUtility.getInstance();
 
 	@Override
 	public Credential getPassword(String email) throws SQLException {
-		String sql = 	"SELECT E.E_ID, C.E_PASSWORD\n" +
-						"FROM EMPLOYEE E\n" +
-						"INNER JOIN CREDENTIAL C\n" +
-						"ON E.E_ID = C.E_ID\n" +
-						"WHERE E_EMAIL = ?";
+		String sql = "SELECT E.E_ID, C.E_PASSWORD\n" +
+		"FROM EMPLOYEE E\n" +
+		"INNER JOIN CREDENTIAL C\n" +
+		"ON E.E_ID = C.E_ID\n" +
+		"WHERE E_EMAIL = ?";
+		Connection connection = cu.getConnection();
 		CallableStatement stmt = connection.prepareCall(sql);
 		stmt.setString(1, email);
 
@@ -31,7 +31,6 @@ public class CredentialDaoImpl implements CredentialDao {
 			c.seteId(rs.getInt("E_ID"));
 			c.setPassword(rs.getString("E_PASSWORD"));
 		}
-
 		return c;
 	}
 }

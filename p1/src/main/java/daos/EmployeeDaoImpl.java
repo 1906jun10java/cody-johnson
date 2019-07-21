@@ -9,12 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EmployeeDaoImpl implements EmployeeDao {
-	private static ConnectionUtility cs = ConnectionUtility.getInstance();
-	private static Connection connection = cs.getConnection();
+	private static ConnectionUtility cu = ConnectionUtility.getInstance();
 
 	@Override
 	public Employee getEmployee(int id) throws SQLException {
 		String sql = "SELECT * FROM EMPLOYEE WHERE E_ID = ?";
+		Connection connection = cu.getConnection();
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, id);
 
@@ -24,6 +24,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	@Override
 	public Employee getEmployee(String email) throws SQLException {
 		String sql = "SELECT * FROM EMPLOYEE WHERE E_EMAIL = ?";
+		Connection connection = cu.getConnection();
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, email);
 
@@ -45,7 +46,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			e.setLastName(rs.getString("E_LAST_NAME"));
 			e.setReportsTo(rs.getInt("E_REPORTS_TO"));
 		}
-
 		return e;
 	}
 }

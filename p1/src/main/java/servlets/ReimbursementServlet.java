@@ -35,6 +35,10 @@ public class ReimbursementServlet extends HttpServlet {
 			String html = "/html/createReimbursement.html";
 			req.getRequestDispatcher(html).forward(req, res);
 		}
+		else if (uri.equals("/reimbursement/subordinatesof")) {
+			String json = rs.getSubordinateReimbursements(req);
+			pw.write(json);
+		}
 	}
 
 	// POST

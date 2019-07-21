@@ -7,26 +7,16 @@ let reimbursementTableHeaders = [
 	"Type", "Status", "Amount", "Date", "Info"
 ];
 
-let reimbursementStatuses = {
-	"-1": "Rejected",
-	"0": "More Information Required",
-	"1": "Initialized",
-	"2": "Supervisor Approved",
-	"3": "Department Head Approved",
-	"4": "Accepted"
-};
-
-let reimbursementTypes = {
-	"1": "Seminar",
-	"2": "Preparation Classes",
-	"3": "Certification",
-	"4": "Technical Training",
-	"5": "Other"
-};
-
 window.onload = () => {
 	setHeading();
 	loadUserReimbursements();
+	if (sessionStorage.getItem("level") > 1) {
+		let div = document.getElementById("subordinateReimbursements");
+		let tableTitle = document.createElement("h5");
+		tableTitle.innerText = "Subordinate Reimbursements";
+		div.appendChild(tableTitle);
+		loadSubordinateReimbursements();
+	}
 
 	// Event handlers
 	document.getElementById("logOutBtn").onclick = () => {
@@ -54,14 +44,39 @@ let loadUserReimbursements = () => {
 			status.innerText = json.status;
 			document.getElementById("userReimbursements").appendChild(status);
 		} else {
-			populateUserReimbursements(json);
+			populateReimbursementTable(json, "user");
 		}
 	});
 };
 
-// Populate user reimbursements table
-let populateUserReimbursements = (json) => {
-	let userReimbursementsDiv = document.getElementById("userReimbursements");
+// Get subordinate reimbursements
+let loadSubordinateReimbursements = () => {
+	let endpoint = "/reimbursement/subordinatesof?eId=";
+	endpoint += sessionStorage.getItem("id");
+
+	fetch(endpoint).then((res) => res.json()).then((json) => {
+		if (json.error) {
+			console.log(json.error);
+		} else if (json.status) {
+			let status = document.createElement("p");
+			status.innerText = json.status;
+			document.getElementById("subordinateReimbursements").appendChild(status);
+		} else {
+			populateReimbursementTable(json, "subordinates");
+		}
+	});
+};
+
+// Populate reimbursements table
+let populateReimbursementTable = (json, flag) => {
+	let div = null;
+	if (flag === "user") {
+		div = document.getElementById("userReimbursements");
+	} else if (flag === "subordinates") {
+		div = document.getElementById("subordinateReimbursements");
+	} else {
+		return;
+	}
 
 	let table = document.createElement("table");
 	let tableBody = document.createElement("tbody");
@@ -82,13 +97,10 @@ let populateUserReimbursements = (json) => {
 		for (let key in element) {
 			if (element.hasOwnProperty(key)) {
 				let td = document.createElement("td");
-				if (key === "statusId") {
-					td.innerText = reimbursementStatuses[element[key]];
-				} else if (key === "typeId") {
-					td.innerText = reimbursementTypes[element[key]];
-				} else if (key === "receiptImgFile" || key === "id" ||
-					key === "employeeId" || key === "description") {
-					continue;
+				if (key === "statusName") {
+					td.innerText = element[key];
+				} else if (key === "typeName") {
+					td.innerText = element[key];
 				} else if (key === "amount") {
 					td.innerText = "$" + element[key].toFixed(2);
 				} else if (key === "unixTs") {
@@ -98,7 +110,7 @@ let populateUserReimbursements = (json) => {
 					let year = date.getFullYear();
 					td.innerText = `${month}-${day}-${year}`;
 				} else {
-					td.innerText = element[key];
+					continue;
 				}
 				tr.appendChild(td);
 			}
@@ -107,11 +119,11 @@ let populateUserReimbursements = (json) => {
 		let td = document.createElement("td");
 		let link = document.createElement("a");
 		link.href = "/reimbursement/view?id=" + element["id"];
-		link.innerText = "Info";
+		link.innerText = "View";
 		td.appendChild(link);
 		tr.appendChild(td);
 		tableBody.appendChild(tr);
 	});
 	table.appendChild(tableBody);
-	userReimbursementsDiv.appendChild(table);
+	div.appendChild(table);
 };
