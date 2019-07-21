@@ -56,7 +56,7 @@ public class ReimbursementService {
 		// Get employee ID parameter from request
 		String param = req.getParameter("eId");
 		if (param == null) {
-			return ("{\"error\":" + "\"Error processing data\"}");
+			return ("{\"error\":" + "\"User doesn't exist\"}");
 		}
 		int eId = Integer.parseInt(param);
 
@@ -71,7 +71,7 @@ public class ReimbursementService {
 		// Return JSON
 		ObjectMapper om = new ObjectMapper();
 		if (rl == null) {
-			return ("{\"error\":" + "\"Error processing data\"}");
+			return ("{\"status\":" + "\"Nothing to display\"}");
 		}
 		return om.writeValueAsString(rl);
 	}
