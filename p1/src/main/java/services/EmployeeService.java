@@ -6,8 +6,13 @@ import daos.CredentialDaoImpl;
 import daos.EmployeeDaoImpl;
 import models.Credential;
 import models.Employee;
+import org.apache.commons.fileupload.FileItem;
+import utilities.MultipartFormUtility;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class EmployeeService {
 	private static EmployeeService instance;
@@ -23,8 +28,13 @@ public class EmployeeService {
 	}
 
 	// Check user credentials, returns a JSON string
-	public String login(String email, String password)
-	throws JsonProcessingException {
+	public String login(HttpServletRequest req) throws JsonProcessingException {
+		// Parse form data
+		List<FileItem> items = MultipartFormUtility.getItems(req);
+		Map<String,String> data = MultipartFormUtility.parseFormData(items);
+		String email = data.get("email");
+		String password = data.get("password");
+
 		// Get matching credential from db
 		Credential c = null;
 		try {
