@@ -51,8 +51,13 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	}
 
 	@Override
-	public void updateReimbursement(Reimbursement r) throws SQLException {
-
+	public void updateReimbursement(int rId, int statusId) throws SQLException {
+		String sql = "UPDATE REIMBURSEMENT SET R_STATUS_ID = ? WHERE R_ID = ?";
+		Connection connection = cu.getConnection();
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, statusId);
+		stmt.setInt(2, rId);
+		stmt.executeUpdate();
 	}
 
 	@Override

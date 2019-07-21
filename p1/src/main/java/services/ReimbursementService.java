@@ -101,6 +101,26 @@ public class ReimbursementService {
 		return om.writeValueAsString(rl);
 	}
 
+	// Update reimbursement status
+	public String updateReimbursement(HttpServletRequest req) {
+		String rIdStr = req.getParameter("rId");
+		String statusIdStr = req.getParameter("statusId");
+		if (rIdStr == null || statusIdStr == null) {
+			return ("{\"error\":" + "\"User doesn't exist\"}");
+		}
+		int rId = Integer.parseInt(rIdStr);
+		int statusId = Integer.parseInt(statusIdStr);
+
+		// Update reimbursement
+		try {
+			rdi.updateReimbursement(rId, statusId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ("{\"error\":" + "\"Update unsuccessful\"}");
+		}
+		return ("{\"status\":" + "\"Update successful\"}");
+	}
+
 	// Handle a post request to /reimbursement/create
 	public String addReimbursement(HttpServletRequest req) {
 		boolean isMultiPart = ServletFileUpload.isMultipartContent(req);

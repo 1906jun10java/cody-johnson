@@ -52,5 +52,9 @@ public class ReimbursementServlet extends HttpServlet {
 			String json = rs.addReimbursement(req);
 			pw.write(json);
 		}
+		else if (uri.equals("/reimbursement/update")) {
+			String json = rs.updateReimbursement(req);
+			pw.write(json);
+		}
 	}
 }
