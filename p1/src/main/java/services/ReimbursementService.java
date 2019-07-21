@@ -26,6 +26,30 @@ public class ReimbursementService {
 		return instance;
 	}
 
+	// Return JSON of reimbursement
+	public String getReimbursement(HttpServletRequest req)
+	throws JsonProcessingException {
+		// Get reimbursement ID parameter from request
+		String param = req.getParameter("id");
+		if (param == null ) {
+			return ("{\"error\":" + "\"Error processing data\"}");
+		}
+		int id = Integer.parseInt(param);
+
+		Reimbursement r = null;
+		try {
+			r = rdi.getReimbursement(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		ObjectMapper om = new ObjectMapper();
+		if (r == null) {
+			return ("{\"error\":" + "\"Error processing data\"}");
+		}
+		return om.writeValueAsString(r);
+	}
+
 	// Return JSON of employee reimbursements
 	public String getEmployeeReimbursements(HttpServletRequest req)
 	throws JsonProcessingException {

@@ -19,7 +19,15 @@ public class ReimbursementServlet extends HttpServlet {
 
 		// Get requested endpoint
 		String uri = req.getRequestURI();
-		if (uri.equals("/reimbursement/employee/")) {
+		if (uri.equals("/reimbursement")) {
+			String json = rs.getReimbursement(req);
+			pw.write(json);
+		}
+		else if (uri.equals("/reimbursement/view")) {
+			String html = "/html/viewReimbursement.html";
+			req.getRequestDispatcher(html).forward(req, res);
+		}
+		else if (uri.equals("/reimbursement/employee")) {
 			String json = rs.getEmployeeReimbursements(req);
 			pw.write(json);
 		}

@@ -14,7 +14,20 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 	@Override
 	public Reimbursement getReimbursement(int id) throws SQLException {
-		return null;
+		String sql = "SELECT * FROM REIMBURSEMENT WHERE R_ID = ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, id);
+
+		ResultSet rs = stmt.executeQuery();
+		if (!rs.isBeforeFirst()) {
+			return null;
+		}
+
+		Reimbursement r = new Reimbursement();
+		while (rs.next()) {
+			r = populateData(rs);
+		}
+		return r;
 	}
 
 	@Override
@@ -51,16 +64,23 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 		List<Reimbursement> rl = new ArrayList<>();
 		while (rs.next()) {
-			Reimbursement r = new Reimbursement();
-			r.setEmployeeId(rs.getInt("E_ID"));
-			r.setTypeId(rs.getInt("R_TYPE_ID"));
-			r.setStatusId(rs.getInt("R_STATUS_ID"));
-			r.setAmount(BigDecimal.valueOf(rs.getDouble("R_AMOUNT")));
-			r.setUnixTs(rs.getLong("R_UNIX_TS"));
-			r.setDescription(rs.getString("R_DESCRIPTION"));
-			r.setReceiptImgFile(rs.getBytes("R_RECEIPT_IMG"));
+			Reimbursement r = populateData(rs);
 			rl.add(r);
 		}
 		return rl;
+	}
+
+	private Reimbursement populateData(ResultSet rs)
+	throws SQLException {
+		Reimbursement r = new Reimbursement();
+		r.setId(rs.getInt("R_ID"));
+		r.setEmployeeId(rs.getInt("E_ID"));
+		r.setTypeId(rs.getInt("R_TYPE_ID"));
+		r.setStatusId(rs.getInt("R_STATUS_ID"));
+		r.setAmount(BigDecimal.valueOf(rs.getDouble("R_AMOUNT")));
+		r.setUnixTs(rs.getLong("R_UNIX_TS"));
+		r.setDescription(rs.getString("R_DESCRIPTION"));
+		r.setReceiptImgFile(rs.getBytes("R_RECEIPT_IMG"));
+		return r;
 	}
 }
