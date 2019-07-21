@@ -3,6 +3,9 @@ import {logOut, validate} from "./validation.js";
 // Check if user is valid
 validate();
 
+// Store reimbursement status for updating
+let sId = null;
+
 window.onload = () => {
 	// Hide manager actions
 	if (sessionStorage.getItem("level") > 1) {
@@ -29,34 +32,24 @@ window.onload = () => {
 
 // Populate data
 let populateReimbursement = (json) => {
-	for (let key in json) {
-		if (json.hasOwnProperty(key)) {
-			if (key === "id") {
-				document.getElementById("id").innerText = "Reimbursement #" + json[key];
-			} else if (key === "employeeId") {
-				document.getElementById("employee").innerText = json[key];
-			} else if (key === "typeName") {
-				document.getElementById("type").innerText = json[key];
-			} else if (key === "statusName") {
-				document.getElementById("status").innerText = json[key];
-			} else if (key === "amount") {
-				document.getElementById("amount").innerText = `\$${json[key].toFixed(2)}`;
-			} else if (key === "unixTs") {
-				let date = new Date(json[key]*1000);
-				let month = date.getMonth();
-				let day = date.getDate();
-				let year = date.getFullYear();
-				document.getElementById("date").innerText = `${month}-${day}-${year}`;
-			} else if (key === "description") {
-				document.getElementById("description").innerText = json[key];
-			} else if (key === "receiptImgFile") {
-				let receiptImg = document.createElement("img");
-				receiptImg.src = getBase64FileType(json[key]) + json[key];
-				receiptImg.alt = "Receipt image";
-				document.getElementById("receiptImgDiv").appendChild(receiptImg);
-			}
-		}
-	}
+	document.getElementById("id").innerText = "Reimbursement #" + json["id"];
+	document.getElementById("employee").innerText = json["employeeId"];
+	document.getElementById("type").innerText = json["typeName"];
+	document.getElementById("status").innerText = json["statusName"];
+	sId = parseInt(json["statusId"]);
+	document.getElementById("amount").innerText = `\$${json["amount"].toFixed(2)}`;
+	document.getElementById("description").innerText = json["description"];
+
+	let date = new Date(json["unixTs"]*1000);
+	let month = date.getMonth();
+	let day = date.getDate();
+	let year = date.getFullYear();
+	document.getElementById("date").innerText = `${month}-${day}-${year}`;
+
+	let receiptImg = document.createElement("img");
+	receiptImg.src = getBase64FileType(json["receiptImgFile"]) + json["receiptImgFile"];
+	receiptImg.alt = "Receipt image";
+	document.getElementById("receiptImgDiv").appendChild(receiptImg);
 };
 
 // Get reimbursement from server
@@ -69,7 +62,48 @@ let getReimbursement = () => {
 };
 
 // Reject reimbursement
+let rejectReimbursement = () => {
+	let rId = getUrlParam("id");
+	sId = -1;
+	let endpoint = "/reimbursement/update";
 
+	fetch(endpoint, {
+		method: "POST",
+		headers: {
+			'Content-type': 'application/x-www-form-urlencoded'
+		},
+		body: `rId=${rId}&statusId=${sId}`
+	}).then((res) => res.json).then((json) => {
+		if (json.error) {
+			console.log(json.error);
+		} else {
+			console.log(json);
+			window.location.replace("/dashboard");
+		}
+	});
+};
+
+// Accept reimbursement
+let acceptReimbursement = () => {
+	let rId = getUrlParam("id");
+	sId += 1;
+	let endpoint = "/reimbursement/update";
+
+	fetch(endpoint, {
+		method: "POST",
+		headers: {
+			'Content-type': 'application/x-www-form-urlencoded'
+		},
+		body: `rId=${rId}&statusId=${sId}`
+	}).then((res) => res.json).then((json) => {
+		if (json.error) {
+			console.log(json.error);
+		} else {
+			console.log(json);
+			window.location.replace("/dashboard");
+		}
+	});
+};
 
 // Get ID parameter from URL
 let getUrlParam = (param) => {

@@ -41,12 +41,8 @@ let loadUserReimbursements = () => {
 	fetch(endpoint).then((res) => res.json()).then((json) => {
 		if (json.error) {
 			console.log(json.error);
-		} else if (json.status) {
-			let status = document.createElement("p");
-			status.innerText = json.status;
-			document.getElementById("userReimbursements").appendChild(status);
 		} else {
-			populateReimbursementTable(json, "user", null);
+			populateUserReimbursementTable(json);
 		}
 	});
 };
@@ -59,27 +55,72 @@ let loadSubordinateReimbursements = () => {
 	fetch(endpoint).then((res) => res.json()).then((json) => {
 		if (json.error) {
 			console.log(json.error);
-		} else if (json.status) {
-			let status = document.createElement("p");
-			status.innerText = json.status;
-			document.getElementById("subordinateReimbursements").appendChild(status);
 		} else {
-			let managerLevel = sessionStorage.getItem("level");
-			populateReimbursementTable(json, "subordinates", managerLevel);
+			populateSubordinateReimbursementTable(json);
 		}
 	});
 };
 
-// Populate reimbursements table
-let populateReimbursementTable = (json, flag, managerLevel) => {
-	let div = null;
-	if (flag === "user") {
-		div = document.getElementById("userReimbursements");
-	} else if (flag === "subordinates") {
-		div = document.getElementById("subordinateReimbursements");
-	} else {
-		return;
+// Populate subordinate reimbursements table
+let populateUserReimbursementTable = (json) => {
+	let div = document.getElementById("userReimbursements");
+
+	let table = document.createElement("table");
+	let tableBody = document.createElement("tbody");
+	let tableHead = document.createElement("thead");
+	let tableHeadRow = document.createElement("tr");
+
+	table.className = "table table-sm";
+	reimbursementTableHeaders.forEach(header => {
+		let th = document.createElement("th");
+		th.innerText = header;
+		tableHeadRow.appendChild(th);
+	});
+	tableHead.appendChild(tableHeadRow);
+	table.appendChild(tableHead);
+	if (json.length > 0) {
+		json.forEach(element => {
+			let tr = document.createElement("tr");
+
+			let statusTd = document.createElement("td");
+			statusTd.innerText = element["statusName"];
+			tr.appendChild(statusTd);
+
+			let typeTd = document.createElement("td");
+			typeTd.innerText = element["typeName"];
+			tr.appendChild(typeTd);
+
+			let amountTd = document.createElement("td");
+			amountTd.innerText = `\$${element["amount"].toFixed(2)}`;
+			tr.appendChild(amountTd);
+
+			let dateTd = document.createElement("td");
+			let date = new Date(element["unixTs"]*1000);
+			let month = date.getMonth();
+			let day = date.getDate();
+			let year = date.getFullYear();
+			dateTd.innerText = `${month}-${day}-${year}`;
+			tr.appendChild(dateTd);
+
+			let imgTd = document.createElement("td");
+			let img = document.createElement("a");
+			img.href = "/reimbursement/view?id=" + element["id"];
+			img.innerText = "View";
+			imgTd.appendChild(img);
+			tr.appendChild(imgTd);
+
+			tableBody.appendChild(tr);
+		});
 	}
+
+	table.appendChild(tableBody);
+	div.appendChild(table);
+};
+
+// Populate subordinate reimbursements table
+let populateSubordinateReimbursementTable = (json) => {
+	let managerLevel = sessionStorage.getItem("level");
+	let div = document.getElementById("subordinateReimbursements");
 
 	let table = document.createElement("table");
 	let tableBody = document.createElement("tbody");
@@ -95,41 +136,43 @@ let populateReimbursementTable = (json, flag, managerLevel) => {
 	tableHead.appendChild(tableHeadRow);
 	table.appendChild(tableHead);
 
-	json.forEach(element => {
-		let tr = document.createElement("tr");
-		for (let key in element) {
-			if (element.hasOwnProperty(key)) {
-				if (managerLevel && element["statusId"] !== managerLevel - 1) {
-					continue;
-				}
-				let td = document.createElement("td");
-				if (key === "statusName") {
-					td.innerText = element[key];
-				} else if (key === "typeName") {
-					td.innerText = element[key];
-				} else if (key === "amount") {
-					td.innerText = "$" + element[key].toFixed(2);
-				} else if (key === "unixTs") {
-					let date = new Date(element[key]*1000);
-					let month = date.getMonth();
-					let day = date.getDate();
-					let year = date.getFullYear();
-					td.innerText = `${month}-${day}-${year}`;
-				} else {
-					continue;
-				}
-				tr.appendChild(td);
+	if (json.length > 0) {
+		json.forEach(element => {
+			if (managerLevel && element["statusId"] === managerLevel - 1) {
+				let tr = document.createElement("tr");
+
+				let statusTd = document.createElement("td");
+				statusTd.innerText = element["statusName"];
+				tr.appendChild(statusTd);
+
+				let typeTd = document.createElement("td");
+				typeTd.innerText = element["typeName"];
+				tr.appendChild(typeTd);
+
+				let amountTd = document.createElement("td");
+				amountTd.innerText = `\$${element["amount"].toFixed(2)}`;
+				tr.appendChild(amountTd);
+
+				let dateTd = document.createElement("td");
+				let date = new Date(element["unixTs"]*1000);
+				let month = date.getMonth();
+				let day = date.getDate();
+				let year = date.getFullYear();
+				dateTd.innerText = `${month}-${day}-${year}`;
+				tr.appendChild(dateTd);
+
+				let imgTd = document.createElement("td");
+				let img = document.createElement("a");
+				img.href = "/reimbursement/view?id=" + element["id"];
+				img.innerText = "View";
+				imgTd.appendChild(img);
+				tr.appendChild(imgTd);
+
+				tableBody.appendChild(tr);
 			}
-			tableBody.appendChild(tr);
-		}
-		let td = document.createElement("td");
-		let link = document.createElement("a");
-		link.href = "/reimbursement/view?id=" + element["id"];
-		link.innerText = "View";
-		td.appendChild(link);
-		tr.appendChild(td);
-		tableBody.appendChild(tr);
-	});
+		});
+	}
+
 	table.appendChild(tableBody);
 	div.appendChild(table);
 };
