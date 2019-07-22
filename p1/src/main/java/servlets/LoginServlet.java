@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class LoginServlet extends HttpServlet {
 	private EmployeeService employeeService = EmployeeService.getInstance();
@@ -24,7 +23,6 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
 		String json = employeeService.login(req);
-		PrintWriter pw = res.getWriter();
-		pw.write(json);
+		res.getWriter().write(json);
 	}
 }
