@@ -25,5 +25,9 @@ public class EmployeeServlet extends HttpServlet {
 			String json = employeeService.getEmployees();
 			res.getWriter().write(json);
 		}
+		else if (uri.equals("/employee/profile")) {
+			String html = "/html/profile.html";
+			req.getRequestDispatcher(html).forward(req, res);
+		}
 	}
 }
