@@ -15,7 +15,15 @@ public class EmployeeServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 	throws IOException, ServletException {
-		String json = employeeService.getEmployee(req);
-		res.getWriter().write(json);
+		// Get requested endpoint
+		String uri = req.getRequestURI();
+		if (uri.equals("/employee")) {
+			String json = employeeService.getEmployee(req);
+			res.getWriter().write(json);
+		}
+		else if (uri.equals("/employee/all")) {
+			String json = employeeService.getEmployees();
+			res.getWriter().write(json);
+		}
 	}
 }

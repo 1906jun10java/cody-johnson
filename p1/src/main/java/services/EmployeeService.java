@@ -51,6 +51,23 @@ public class EmployeeService {
 		return om.writeValueAsString(e);
 	}
 
+	// Get all employees
+	public String getEmployees() throws JsonProcessingException {
+		List<Employee> el = null;
+		try {
+			el = edi.getEmployees();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		ObjectMapper om = new ObjectMapper();
+		if (el != null) {
+			return om.writeValueAsString(el);
+		} else {
+			return ("{\"error\":" + "\"Error getting employees\"}");
+		}
+	}
+
 	// Check user credentials, returns a JSON string
 	public String login(HttpServletRequest req) throws JsonProcessingException {
 		// Parse form data
