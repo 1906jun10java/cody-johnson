@@ -21,10 +21,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		stmt.setInt(1, id);
 
 		ResultSet rs = stmt.executeQuery();
+		Employee e = null;
 		if (!rs.isBeforeFirst()) {
 			return null;
 		}
-		return parseResultSet(rs);
+		while (rs.next()) {
+			e = parseResultSet(rs);
+		}
+		return e;
 	}
 	@Override
 	public Employee getEmployee(String email) throws SQLException {
