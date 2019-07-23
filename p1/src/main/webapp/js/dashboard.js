@@ -11,6 +11,7 @@ let isManager = sessionStorage.getItem("level") > 1;
 
 window.onload = () => {
 	setHeading();
+	setMyProfileLink();
 	loadUserReimbursements();
 	if (isManager) {
 		let div = document.getElementById("subordinateReimbursements");
@@ -24,6 +25,12 @@ window.onload = () => {
 	document.getElementById("logOutBtn").onclick = () => {
 		logOut();
 	};
+};
+
+// Set My Profile link
+let setMyProfileLink = () => {
+	let link = document.getElementById("profileLink");
+	link.href = "/employee/profile?eId=" + sessionStorage.getItem("id");
 };
 
 // Set welcome message in heading

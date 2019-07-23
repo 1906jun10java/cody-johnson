@@ -13,6 +13,8 @@ let reimbursementType = {
 };
 
 window.onload = () => {
+	setMyProfileLink();
+
 	// Event handlers
 	document.getElementById("logOutBtn").onclick = () => {
 		logOut();
@@ -21,6 +23,12 @@ window.onload = () => {
 		e.preventDefault();
 		handleFormSubmit();
 	};
+};
+
+// Set My Profile link
+let setMyProfileLink = () => {
+	let link = document.getElementById("profileLink");
+	link.href = "/employee/profile?eId=" + sessionStorage.getItem("id");
 };
 
 let handleFormSubmit = () => {

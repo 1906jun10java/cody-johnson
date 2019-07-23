@@ -12,12 +12,19 @@ let roles = {
 };
 
 window.onload = () => {
+	setMyProfileLink();
 	getEmployee();
 
 	// Event handlers
 	document.getElementById("logOutBtn").onclick = () => {
 		logOut();
 	};
+};
+
+// Set My Profile link
+let setMyProfileLink = () => {
+	let link = document.getElementById("profileLink");
+	link.href = "/employee/profile?eId=" + sessionStorage.getItem("id");
 };
 
 // Get employee data from server

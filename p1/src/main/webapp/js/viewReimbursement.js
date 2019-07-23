@@ -20,6 +20,7 @@ window.onload = () => {
 		};
 	}
 
+	setMyProfileLink();
 	getReimbursement();
 
 	// Event handlers
@@ -47,7 +48,9 @@ let generateManagerActions = () => {
 // Populate data
 let populateReimbursement = (json) => {
 	document.getElementById("id").innerText = "Reimbursement #" + json["id"];
-	document.getElementById("employee").innerText = json["employeeId"];
+	let employeeLink = document.getElementById("employee");
+	employeeLink.innerText = json["employeeId"];
+	employeeLink.href = "/employee/profile?eId=" + json["employeeId"];
 	document.getElementById("type").innerText = json["typeName"];
 	document.getElementById("status").innerText = json["statusName"];
 	sId = parseInt(json["statusId"]);
@@ -64,6 +67,12 @@ let populateReimbursement = (json) => {
 	receiptImg.src = getBase64FileType(json["receiptImgFile"]) + json["receiptImgFile"];
 	receiptImg.alt = "Receipt image";
 	document.getElementById("receiptImgDiv").appendChild(receiptImg);
+};
+
+// Set My Profile link
+let setMyProfileLink = () => {
+	let link = document.getElementById("profileLink");
+	link.href = "/employee/profile?eId=" + sessionStorage.getItem("id");
 };
 
 // Get reimbursement from server

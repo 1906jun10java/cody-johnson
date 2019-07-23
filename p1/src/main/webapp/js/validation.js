@@ -1,6 +1,8 @@
+const eId = sessionStorage.getItem("id");
+
 // Validate user
 const validate = () => {
-	if (sessionStorage.getItem("id") == null) {
+	if (eId == null) {
 		window.location.replace("/login");
 	}
 };
