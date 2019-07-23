@@ -5,11 +5,11 @@ validate();
 
 // For sending reimbursement type by selection index
 let reimbursementType = {
-	"Seminar":0,
-	"Preparation Classes":1,
-	"Certification":2,
-	"Technical Training":3,
-	"Other":4
+	"Seminar":1,
+	"Preparation Classes":2,
+	"Certification":3,
+	"Technical Training":4,
+	"Other":5
 };
 
 window.onload = () => {
