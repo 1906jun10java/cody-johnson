@@ -27,6 +27,30 @@ public class EmployeeService {
 		return instance;
 	}
 
+	// Return an employee by ID
+	public String getEmployee(HttpServletRequest req)
+	throws JsonProcessingException {
+		String eIdStr = req.getParameter("eId");
+		if (eIdStr == null) {
+			return ("{\"error\":" + "\"User doesn't exist\"}");
+		}
+		int eId = Integer.parseInt(eIdStr);
+
+		// Get employee
+		Employee e = null;
+		try {
+			e = edi.getEmployee(eId);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		if (e == null) {
+			return ("{\"error\":" + "\"User doesn't exist\"}");
+		}
+
+		ObjectMapper om = new ObjectMapper();
+		return om.writeValueAsString(e);
+	}
+
 	// Check user credentials, returns a JSON string
 	public String login(HttpServletRequest req) throws JsonProcessingException {
 		// Parse form data
