@@ -6,14 +6,18 @@ validate();
 // Store reimbursement status for updating
 let sId = null;
 
+let isManager = sessionStorage.getItem("level") > 1;
+
 window.onload = () => {
 	// Hide manager actions
-	if (sessionStorage.getItem("level") > 1) {
-		document.getElementById("rejectBtn").style.visibility = "visible";
-		document.getElementById("acceptBtn").style.visibility = "visible";
-	} else {
-		document.getElementById("rejectBtn").style.visibility = "hidden";
-		document.getElementById("acceptBtn").style.visibility = "hidden";
+	if (isManager) {
+		generateManagerActions();
+		document.getElementById("rejectBtn").onclick = () => {
+			rejectReimbursement();
+		};
+		document.getElementById("acceptBtn").onclick = () => {
+			acceptReimbursement();
+		};
 	}
 
 	getReimbursement();
@@ -22,12 +26,22 @@ window.onload = () => {
 	document.getElementById("logOutBtn").onclick = () => {
 		logOut();
 	};
-	document.getElementById("rejectBtn").onclick = () => {
-		rejectReimbursement();
-	};
-	document.getElementById("acceptBtn").onclick = () => {
-		acceptReimbursement();
-	};
+};
+
+let generateManagerActions = () => {
+	let rejectBtnDiv = document.getElementById("rejectBtnDiv");
+	let rejectBtn = document.createElement("button");
+	rejectBtn.id = "rejectBtn";
+	rejectBtn.className = "btn btn-danger";
+	rejectBtn.innerText = "Reject";
+	rejectBtnDiv.appendChild(rejectBtn);
+
+	let acceptBtnDiv = document.getElementById("acceptBtnDiv");
+	let acceptBtn = document.createElement("button");
+	acceptBtn.id = "acceptBtn";
+	acceptBtn.className = "btn btn-dark";
+	acceptBtn.innerText = "Accept";
+	acceptBtnDiv.appendChild(acceptBtn);
 };
 
 // Populate data
