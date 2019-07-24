@@ -7,6 +7,7 @@ import daos.EmployeeDaoImpl;
 import models.Credential;
 import models.Employee;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.log4j.Logger;
 import utilities.MultipartFormUtility;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ public class EmployeeService {
 	private static EmployeeService instance;
 	private static EmployeeDaoImpl edi = new EmployeeDaoImpl();
 	private static CredentialDaoImpl cdi = new CredentialDaoImpl();
+	private final static Logger logger = Logger.getLogger(EmployeeService.class);
 
 	// Return singleton instance
 	public static synchronized EmployeeService getInstance() {
@@ -93,12 +95,16 @@ public class EmployeeService {
 				ex.printStackTrace();
 			}
 		} else {
+			if (c != null) {
+				logger.warn("FAILED LOGIN ATTEMPT FOR ID " + c.geteId());
+			}
 			return ("{\"error\":" + "\"Invalid email or password\"}");
 		}
 
 		// Return JSON
 		ObjectMapper om = new ObjectMapper();
 		if (e != null) {
+			logger.info("ID " + e.getId() + " has logged in.");
 			return om.writeValueAsString(e);
 		} else {
 			return ("{\"error\":" + "\"Invalid email or password\"}");

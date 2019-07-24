@@ -6,6 +6,7 @@ import daos.ReimbursementDaoImpl;
 import models.Reimbursement;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import utilities.MultipartFormUtility;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class ReimbursementService {
 	private static ReimbursementService instance;
 	private static ReimbursementDaoImpl rdi = new ReimbursementDaoImpl();
+	private final static Logger logger = Logger.getLogger(ReimbursementService.class);
 
 	// Return singleton instance
 	public static synchronized ReimbursementService getInstance() {
@@ -118,6 +120,8 @@ public class ReimbursementService {
 			e.printStackTrace();
 			return ("{\"error\":" + "\"Update unsuccessful\"}");
 		}
+		logger.info("Reimbursement ID " + rId + " updated");
+
 		return ("{\"status\":" + "\"Update successful\"}");
 	}
 
@@ -144,6 +148,8 @@ public class ReimbursementService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		logger.info("Reimbursement created by ID " + r.getEmployeeId());
+
 		return ("{\"message\":" + "\"Submission successful\"}");
 	}
 
