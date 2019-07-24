@@ -3,6 +3,11 @@ import {logOut, validate} from "./validation.js";
 // Check if user is valid
 validate();
 
+// Table headers
+let reimbursementTableHeaders = [
+	"Type", "Status", "Amount", "Date", "Info"
+];
+
 // Lookup for employee role
 let roles = {
 	"1": "Engineer",
@@ -16,6 +21,9 @@ let isManager = sessionStorage.getItem("level") > 1;
 window.onload = () => {
 	if (isManager) {
 		addDirectoryNavItem();
+	}
+	if (isManager && getUrlParam("eId") !== sessionStorage.getItem("id")) {
+		loadUserReimbursements();
 	}
 
 	setMyProfileLink();
@@ -69,6 +77,81 @@ let populateEmployee = (json) => {
 		link.innerText = json["reportsTo"];
 		document.getElementById("manager").appendChild(link);
 	}
+};
+
+// Get user's reimbursements
+let loadUserReimbursements = () => {
+	let endpoint = "/reimbursement/employee?eId=" + getUrlParam("eId");
+
+	fetch(endpoint).then((res) => res.json()).then((json) => {
+		if (json.error) {
+			console.log(json.error);
+		} else {
+			populateUserReimbursementTable(json);
+		}
+	});
+};
+
+// Populate subordinate reimbursements table
+let populateUserReimbursementTable = (json) => {
+	let divRow = document.getElementById("reimbursements");
+
+	let divCol = document.createElement("div");
+	divCol.className = "col";
+	let title = document.createElement("h5");
+	title.innerText = "Reimbursements";
+	divCol.append(title);
+
+	let table = document.createElement("table");
+	let tableBody = document.createElement("tbody");
+	let tableHead = document.createElement("thead");
+	let tableHeadRow = document.createElement("tr");
+
+	table.className = "table table-sm";
+	reimbursementTableHeaders.forEach(header => {
+		let th = document.createElement("th");
+		th.innerText = header;
+		tableHeadRow.appendChild(th);
+	});
+	tableHead.appendChild(tableHeadRow);
+	table.appendChild(tableHead);
+	if (json.length > 0) {
+		json.forEach(element => {
+			let tr = document.createElement("tr");
+
+			let statusTd = document.createElement("td");
+			statusTd.innerText = element["statusName"];
+			tr.appendChild(statusTd);
+
+			let typeTd = document.createElement("td");
+			typeTd.innerText = element["typeName"];
+			tr.appendChild(typeTd);
+
+			let amountTd = document.createElement("td");
+			amountTd.innerText = `\$${element["amount"].toFixed(2)}`;
+			tr.appendChild(amountTd);
+
+			let dateTd = document.createElement("td");
+			let date = new Date(element["unixTs"]*1000);
+			let month = date.getMonth();
+			let day = date.getDate();
+			let year = date.getFullYear();
+			dateTd.innerText = `${month}-${day}-${year}`;
+			tr.appendChild(dateTd);
+
+			let imgTd = document.createElement("td");
+			let img = document.createElement("a");
+			img.href = "/reimbursement/view?id=" + element["id"];
+			img.innerText = "View";
+			imgTd.appendChild(img);
+			tr.appendChild(imgTd);
+
+			tableBody.appendChild(tr);
+		});
+	}
+	table.appendChild(tableBody);
+	divCol.appendChild(table);
+	divRow.appendChild(divCol);
 };
 
 // Get ID parameter from URL
