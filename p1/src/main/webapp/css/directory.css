@@ -1,0 +1,15 @@
+@import "https://getbootstrap.com/docs/4.3/dist/css/bootstrap.min.css";
+@import "nav.css";
+
+body {
+	padding-top: 5rem;
+}
+
+.directory {
+	padding: 3rem 1.5rem;
+	max-width: 512px;
+}
+.directory p {
+	font-size:1.25rem;
+	font-weight:300;
+}

@@ -29,5 +29,9 @@ public class EmployeeServlet extends HttpServlet {
 			String html = "/html/profile.html";
 			req.getRequestDispatcher(html).forward(req, res);
 		}
+		else if (uri.equals("/employee/directory")) {
+			String html = "/html/directory.html";
+			req.getRequestDispatcher(html).forward(req, res);
+		}
 	}
 }

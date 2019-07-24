@@ -11,6 +11,7 @@ let isManager = sessionStorage.getItem("level") > 1;
 window.onload = () => {
 	// Hide manager actions
 	if (isManager) {
+		addDirectoryNavItem();
 		generateManagerActions();
 		document.getElementById("rejectBtn").onclick = () => {
 			rejectReimbursement();
@@ -67,6 +68,18 @@ let populateReimbursement = (json) => {
 	receiptImg.src = getBase64FileType(json["receiptImgFile"]) + json["receiptImgFile"];
 	receiptImg.alt = "Receipt image";
 	document.getElementById("receiptImgDiv").appendChild(receiptImg);
+};
+
+// Add directory link in nav
+let addDirectoryNavItem = () => {
+	let itemLi = document.getElementById("directoryNavItem");
+
+	let link = document.createElement("a");
+	link.className = "nav-link";
+	link.href = "/employee/directory";
+	link.innerText = "Directory";
+
+	itemLi.appendChild(link);
 };
 
 // Set My Profile link

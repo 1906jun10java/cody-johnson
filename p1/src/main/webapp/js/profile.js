@@ -11,7 +11,13 @@ let roles = {
 	"4": "Director"
 };
 
+let isManager = sessionStorage.getItem("level") > 1;
+
 window.onload = () => {
+	if (isManager) {
+		addDirectoryNavItem();
+	}
+
 	setMyProfileLink();
 	getEmployee();
 
@@ -19,6 +25,18 @@ window.onload = () => {
 	document.getElementById("logOutBtn").onclick = () => {
 		logOut();
 	};
+};
+
+// Add directory link in nav
+let addDirectoryNavItem = () => {
+	let itemLi = document.getElementById("directoryNavItem");
+
+	let link = document.createElement("a");
+	link.className = "nav-link";
+	link.href = "/employee/directory";
+	link.innerText = "Directory";
+
+	itemLi.appendChild(link);
 };
 
 // Set My Profile link
