@@ -7,7 +7,7 @@ body {
 
 .directory {
 	padding: 3rem 1.5rem;
-	max-width: 512px;
+	text-align: left;
 }
 .directory p {
 	font-size:1.25rem;

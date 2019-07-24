@@ -1,19 +1,11 @@
 @import "https://getbootstrap.com/docs/4.3/dist/css/bootstrap.min.css";
 @import "nav.css";
 
-html, body {
-	height: 100%;
-}
-
 body {
-	display: -ms-flexbox;
-	display: flex;
-	-ms-flex-align: center;
-	align-items: center;
-	background-color: #f5f5f5;
+	padding-top: 5rem;
 }
 
 #content {
-	margin: auto;
-	width: 50%;
+	padding: 3rem 1.5rem;
+	text-align: left;
 }
