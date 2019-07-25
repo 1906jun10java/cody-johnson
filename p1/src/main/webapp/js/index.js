@@ -1,8 +1,29 @@
 window.onload = () => {
+	// Event listeners
 	document.getElementById("signInForm").onsubmit = (e) => {
 		e.preventDefault();
 		handleFormSubmit();
 	};
+	document.getElementById("email").oninput = (e) => {
+		clearErrors();
+	};
+	document.getElementById("password").oninput = (e) => {
+		clearErrors();
+	};
+};
+
+let displayErrors = (error) => {
+	let form = document.getElementById("signInForm");
+	let div = document.createElement("div");
+	div.id = "errors";
+	let p = document.createElement("p");
+	p.innerText = error;
+	div.appendChild(p);
+	form.appendChild(div);
+};
+
+let clearErrors = () => {
+	document.getElementById("errors").remove();
 };
 
 let handleFormSubmit = () => {
@@ -14,7 +35,7 @@ let handleFormSubmit = () => {
 		body: data
 	}).then((res) => res.json()).then((json) => {
 		if (json.error) {
-			console.log(json.error);
+			displayErrors(json.error);
 		} else {
 			sessionStorage.setItem("id", `${json.id}`);
 			sessionStorage.setItem("email", `${json.email}`);
