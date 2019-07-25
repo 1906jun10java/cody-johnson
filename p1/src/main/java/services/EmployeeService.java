@@ -6,14 +6,10 @@ import daos.CredentialDaoImpl;
 import daos.EmployeeDaoImpl;
 import models.Credential;
 import models.Employee;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
-import utilities.MultipartFormUtility;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class EmployeeService {
 	private static EmployeeService instance;
@@ -30,14 +26,7 @@ public class EmployeeService {
 	}
 
 	// Return an employee by ID
-	public String getEmployee(HttpServletRequest req)
-	throws JsonProcessingException {
-		String eIdStr = req.getParameter("eId");
-		if (eIdStr == null) {
-			return ("{\"error\":" + "\"User doesn't exist\"}");
-		}
-		int eId = Integer.parseInt(eIdStr);
-
+	public String getEmployee(int eId) throws JsonProcessingException {
 		// Get employee
 		Employee e = null;
 		try {
@@ -71,13 +60,8 @@ public class EmployeeService {
 	}
 
 	// Check user credentials, returns a JSON string
-	public String login(HttpServletRequest req) throws JsonProcessingException {
-		// Parse form data
-		List<FileItem> items = MultipartFormUtility.getItems(req);
-		Map<String,String> data = MultipartFormUtility.parseFormData(items);
-		String email = data.get("email");
-		String password = data.get("password");
-
+	public String login(String email, String password)
+	throws JsonProcessingException {
 		// Get matching credential from db
 		Credential c = null;
 		try {

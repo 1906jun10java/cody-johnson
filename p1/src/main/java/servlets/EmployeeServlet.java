@@ -18,7 +18,13 @@ public class EmployeeServlet extends HttpServlet {
 		// Get requested endpoint
 		String uri = req.getRequestURI();
 		if (uri.equals("/employee")) {
-			String json = employeeService.getEmployee(req);
+			String eIdStr = req.getParameter("eId");
+			String json;
+			if (eIdStr != null) {
+				json = employeeService.getEmployee(Integer.parseInt(eIdStr));
+			} else {
+				json = "{\"error\":" + "\"User doesn't exist\"}";
+			}
 			res.getWriter().write(json);
 		}
 		else if (uri.equals("/employee/all")) {
