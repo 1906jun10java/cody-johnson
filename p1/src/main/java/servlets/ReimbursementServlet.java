@@ -50,7 +50,7 @@ public class ReimbursementServlet extends HttpServlet {
 			String html = "/html/createReimbursement.html";
 			req.getRequestDispatcher(html).forward(req, res);
 		}
-		else if (uri.equals("/reimbursement/subordinatesof")) {
+		else if (uri.equals("/reimbursement/subordinates")) {
 			// Get employee ID parameter from request
 			String json;
 			String param = req.getParameter("eId");

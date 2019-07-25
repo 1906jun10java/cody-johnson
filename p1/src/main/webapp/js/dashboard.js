@@ -71,7 +71,7 @@ let loadUserReimbursements = () => {
 
 // Get subordinate reimbursements
 let loadSubordinateReimbursements = () => {
-	let endpoint = "/reimbursement/subordinatesof?eId=";
+	let endpoint = "/reimbursement/subordinates?eId=";
 	endpoint += sessionStorage.getItem("id");
 
 	fetch(endpoint).then((res) => res.json()).then((json) => {
