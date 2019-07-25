@@ -5,11 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import daos.ReimbursementDaoImpl;
 import models.Reimbursement;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import utilities.MultipartFormUtility;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,15 +27,8 @@ public class ReimbursementService {
 	}
 
 	// Return JSON of reimbursement
-	public String getReimbursement(HttpServletRequest req)
+	public String getReimbursement(int id)
 	throws JsonProcessingException {
-		// Get reimbursement ID parameter from request
-		String param = req.getParameter("id");
-		if (param == null ) {
-			return ("{\"error\":" + "\"Error processing data\"}");
-		}
-		int id = Integer.parseInt(param);
-
 		Reimbursement r = null;
 		try {
 			r = rdi.getReimbursement(id);
@@ -46,22 +37,16 @@ public class ReimbursementService {
 		}
 
 		ObjectMapper om = new ObjectMapper();
-		if (r == null) {
-			return ("{\"error\":" + "\"Error processing data\"}");
+		if (r != null) {
+			return om.writeValueAsString(r);
 		}
-		return om.writeValueAsString(r);
+
+		return ("{\"error\":" + "\"Error processing data\"}");
 	}
 
 	// Return JSON of subordinate reimbursements
-	public String getSubordinateReimbursements(HttpServletRequest req)
+	public String getSubordinateReimbursements(int eId)
 	throws JsonProcessingException {
-		// Get employee ID parameter from request
-		String param = req.getParameter("eId");
-		if (param == null) {
-			return ("{\"error\":" + "\"User doesn't exist\"}");
-		}
-		int eId = Integer.parseInt(param);
-
 		List<Reimbursement> rl = null;
 		try {
 			rl = rdi.getSubordinateReimbursements(eId);
@@ -78,15 +63,8 @@ public class ReimbursementService {
 	}
 
 	// Return JSON of employee reimbursements
-	public String getEmployeeReimbursements(HttpServletRequest req)
+	public String getEmployeeReimbursements(int eId)
 	throws JsonProcessingException {
-		// Get employee ID parameter from request
-		String param = req.getParameter("eId");
-		if (param == null) {
-			return ("{\"error\":" + "\"User doesn't exist\"}");
-		}
-		int eId = Integer.parseInt(param);
-
 		// Get employee reimbursements
 		List<Reimbursement> rl = null;
 		try {
@@ -104,15 +82,7 @@ public class ReimbursementService {
 	}
 
 	// Update reimbursement status
-	public String updateReimbursement(HttpServletRequest req) {
-		String rIdStr = req.getParameter("rId");
-		String statusIdStr = req.getParameter("statusId");
-		if (rIdStr == null || statusIdStr == null) {
-			return ("{\"error\":" + "\"User doesn't exist\"}");
-		}
-		int rId = Integer.parseInt(rIdStr);
-		int statusId = Integer.parseInt(statusIdStr);
-
+	public String updateReimbursement(int rId, int statusId) {
 		// Update reimbursement
 		try {
 			rdi.updateReimbursement(rId, statusId);
@@ -126,15 +96,7 @@ public class ReimbursementService {
 	}
 
 	// Handle a post request to /reimbursement/create
-	public String addReimbursement(HttpServletRequest req) {
-		boolean isMultiPart = ServletFileUpload.isMultipartContent(req);
-		if (!isMultiPart) {
-			return ("{\"error\":" + "\"Error processing data\"}");
-		}
-
-		// Get items from formData
-		List<FileItem> items = MultipartFormUtility.getItems(req);
-
+	public String addReimbursement(List<FileItem> items) {
 		// Map item keys to item values
 		Map<String,String> data = MultipartFormUtility.parseFormData(items);
 
