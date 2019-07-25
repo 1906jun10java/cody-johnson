@@ -21,7 +21,7 @@ public class p1Tests {
 	@Test
 	public void testCredential() throws SQLException {
 		Employee e = edi.getEmployee(45);
-		Credential c = cdi.getPassword(e.getEmail());
+		Credential c = cdi.getCredential(e.getEmail());
 		Assert.assertEquals(e.getId(), c.geteId());
 	}
 }

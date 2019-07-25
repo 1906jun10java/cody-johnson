@@ -81,7 +81,7 @@ public class EmployeeService {
 		// Get matching credential from db
 		Credential c = null;
 		try {
-			c = cdi.getPassword(email);
+			c = cdi.getCredential(email);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

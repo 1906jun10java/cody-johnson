@@ -12,7 +12,7 @@ public class CredentialDaoImpl implements CredentialDao {
 	private static ConnectionUtility cu = ConnectionUtility.getInstance();
 
 	@Override
-	public Credential getPassword(String email) throws SQLException {
+	public Credential getCredential(String email) throws SQLException {
 		String sql = "SELECT E.E_ID, C.E_PASSWORD\n" +
 		"FROM EMPLOYEE E\n" +
 		"INNER JOIN CREDENTIAL C\n" +
