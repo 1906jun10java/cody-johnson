@@ -12,13 +12,6 @@ window.onload = () => {
 	// Hide manager actions
 	if (isManager) {
 		addDirectoryNavItem();
-		generateManagerActions();
-		document.getElementById("rejectBtn").onclick = () => {
-			rejectReimbursement();
-		};
-		document.getElementById("acceptBtn").onclick = () => {
-			acceptReimbursement();
-		};
 	}
 
 	setMyProfileLink();
@@ -93,6 +86,15 @@ let getReimbursement = () => {
 	let endpoint = "/reimbursement?id=" + getUrlParam("id");
 
 	fetch(endpoint).then((res) => res.json()).then((json) => {
+		if (json["statusName"] !== "Accepted" && isManager) {
+			generateManagerActions();
+			document.getElementById("rejectBtn").onclick = () => {
+				rejectReimbursement();
+			};
+			document.getElementById("acceptBtn").onclick = () => {
+				acceptReimbursement();
+			};
+		}
 		populateReimbursement(json);
 	});
 };

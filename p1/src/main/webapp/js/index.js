@@ -23,7 +23,10 @@ let displayErrors = (error) => {
 };
 
 let clearErrors = () => {
-	document.getElementById("errors").remove();
+	let errors = document.getElementById("errors");
+	if (errors) {
+		errors.remove();
+	}
 };
 
 let handleFormSubmit = () => {
