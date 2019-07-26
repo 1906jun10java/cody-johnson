@@ -87,8 +87,7 @@ let getReimbursement = () => {
 	fetch(endpoint).then((res) => res.json()).then((json) => {
 		let mLevel = sessionStorage.getItem("level");
 		let status = json["statusId"];
-		let statusName = json["statusName"];
-		if (statusName !== "Accepted" && isManager && mLevel > status) {
+		if (status !== 4 && status !== -1 && mLevel > status) {
 			generateManagerActions();
 			document.getElementById("rejectBtn").onclick = () => {
 				rejectReimbursement();
