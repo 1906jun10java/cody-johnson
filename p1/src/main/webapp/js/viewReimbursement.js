@@ -9,7 +9,6 @@ let sId = null;
 let isManager = sessionStorage.getItem("level") > 1;
 
 window.onload = () => {
-	// Hide manager actions
 	if (isManager) {
 		addDirectoryNavItem();
 	}
@@ -86,7 +85,9 @@ let getReimbursement = () => {
 	let endpoint = "/reimbursement?id=" + getUrlParam("id");
 
 	fetch(endpoint).then((res) => res.json()).then((json) => {
-		if (json["statusName"] !== "Accepted" && isManager) {
+		let eId = sessionStorage.getItem("id");
+		let statusName = json["statusName"];
+		if (statusName !== "Accepted" && isManager && eId < json["status"]) {
 			generateManagerActions();
 			document.getElementById("rejectBtn").onclick = () => {
 				rejectReimbursement();
@@ -103,28 +104,17 @@ let getReimbursement = () => {
 let rejectReimbursement = () => {
 	let rId = getUrlParam("id");
 	sId = -1;
-	let endpoint = "/reimbursement/update";
-
-	fetch(endpoint, {
-		method: "POST",
-		headers: {
-			'Content-type': 'application/x-www-form-urlencoded'
-		},
-		body: `rId=${rId}&statusId=${sId}`
-	}).then((res) => res.json).then((json) => {
-		if (json.error) {
-			console.log(json.error);
-		} else {
-			console.log(json);
-			window.location.replace("/dashboard");
-		}
-	});
+	updateReimbursement(rId, sId);
 };
 
 // Accept reimbursement
 let acceptReimbursement = () => {
 	let rId = getUrlParam("id");
-	sId += 1;
+	sId = sessionStorage.getItem("level");
+	updateReimbursement(rId, sId);
+};
+
+let updateReimbursement = (rId, sId) => {
 	let endpoint = "/reimbursement/update";
 
 	fetch(endpoint, {
